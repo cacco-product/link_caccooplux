@@ -1,0 +1,180 @@
+.filter_form {
+    margin: 1.25em 0 1.25em 0;
+    padding: 0.625em;
+}
+.filter_form .main_filter_table textarea {
+    width:100%;
+    resize: vertical;
+}
+.filter_form .main_filter_table input[type=text] {
+    width:100%;
+}
+.review_list {
+    margin-bottom: 1em;
+}
+.review_list .check_all{
+    color: #00629b;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.review_list p {
+    margin-bottom: 0em;
+}
+.oplux_data_contents .pagecursor a {
+    text-decoration: none;
+}
+.popup_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    text-align: center;
+}
+.popup_overlay.active {
+    visibility: visible;
+}
+.popup_overlay .popup_content p{
+    text-align: left;
+}
+.popup_content {
+    visibility: hidden;
+    top: 10%;
+    margin: 4.4em auto;
+    padding: 1.25em;
+    background: #fff;
+    border-radius: 0.3em;
+    width: 30%;
+    position: relative;
+}
+.popup_content textarea {
+    width: 100%;
+    resize: vertical;
+}
+.popup_content.active {
+    visibility: visible;
+}
+
+.popup-content .ma_memo_cancel:hover {
+    color: rgb(216, 6, 6);
+}
+.popup-content .ma_memo_update:hover {
+    color: rgb(216, 6, 6);
+}
+.blacklist_popup_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    text-align: center;
+}
+.blacklist_popup_overlay.active {
+    visibility: visible;
+}
+.blacklist_popup_content {
+    visibility: hidden;
+    top: 10%;
+    margin: 4.4em auto;
+    padding: 1.25em;
+    background: #fff;
+    border-radius: 0.3em;
+    width: 30%;
+    position: relative;
+}
+.blacklist_popup_content.active {
+    visibility: visible;
+}
+.msg_popup_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    text-align: center;
+}
+.msg_popup_overlay.active {
+    visibility: visible;
+}
+.msg_popup_content {
+    visibility: hidden;
+    top: 10%;
+    margin: 4.4em auto;
+    padding: 1.25em;
+    background: #fff;
+    border-radius: 0.3em;
+    width: 30%;
+    position: relative;
+}
+.msg_popup_content.active {
+    visibility: visible;
+}
+.confirm_popup_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    text-align: center;
+}
+.confirm_popup_overlay.active {
+    visibility: visible;
+}
+.confirm_popup_content {
+    visibility: hidden;
+    top: 10%;
+    margin: 4.4em auto;
+    padding: 1.25em;
+    background: #fff;
+    border-radius: 0.3em;
+    width: 31.25em;
+    position: relative;
+}
+.confirm_popup_content.active {
+    visibility: visible;
+}
+.text_limited {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 6.25em;
+}
+.w200px {
+    width: 12.5em;
+    min-width: 10em;
+}
+.ow-anywhere {
+    overflow-wrap: anywhere;
+}
+.border1 {
+    border: 1px solid gray;
+    border-radius: 3px;
+}
+.mr5px {
+    margin-right: 0.3em;
+}
+.row_error{
+    background-color: lightpink;
+}
+.fl-left {
+    float: left;
+}
+.fl-right {
+    float: right;
+}
+button.button.unClickable {
+    pointer-events: none;
+    color: #999;
+}

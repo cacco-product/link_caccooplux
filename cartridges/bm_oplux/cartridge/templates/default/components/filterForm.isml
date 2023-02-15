@@ -1,0 +1,136 @@
+<div class="filter_form infobox">
+    <form>
+        <table name="main_filter_table" class="main_filter_table" cellpadding="10">
+            <tr>
+                <iscomment> create date </iscomment>
+                <td><label for="createdDate">${Resource.msg('oplux.order.date', 'opluxAdmin', null)}:</label></td>
+                <td width="450px">
+                    <table class="created-date">
+                        <tr>
+                            <td><label for="createdDateFrom">${Resource.msg('oplux.order.date.from', 'opluxAdmin', null)}:</label></td>
+                            <td><input type="datetime-local" id="createdDateFrom" name="createdDateFrom" value="${pdict.filterparams.createdDateFrom.stringValue}"/></td>
+                            <td><label for="createdDateTo">${Resource.msg('oplux.order.date.to', 'opluxAdmin', null)}:</label></td>
+                            <td><input type="datetime-local" id="createdDateTo" name="createdDateTo" value="${pdict.filterparams.createdDateTo.stringValue}"/></td>
+                        </tr>
+                    </table>
+                </td>
+                <iscomment> rule code </iscomment>
+                <td><label for="rulesCode">${Resource.msg('oplux.rule.code', 'opluxAdmin', null)}:</label></td>
+                <td width="450px"><textarea id="rulesCode" name="rulesCode" maxlength="350">${pdict.filterparams.rulesCode.stringValue || ''}</textarea></td>
+            </tr>
+            <iscomment> response result </iscomment>
+            <tr>
+                <td><label for="responseResult">${Resource.msg('oplux.response.result', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <select class="border1" name="responseResult" id="responseResult">
+                        <option value="">${Resource.msg('oplux.response.result.select', 'opluxAdmin', null)}</option>
+                        <option value="10" ${pdict.filterparams.responseResult.stringValue === "10" ? 'selected' : ''}>${Resource.msg('oplux.response.result.finish', 'opluxAdmin', null)}</option>
+                        <option value="20" ${pdict.filterparams.responseResult.stringValue === "20" ? 'selected' : ''}>${Resource.msg('oplux.response.result.error', 'opluxAdmin', null)}</option>
+                    </select>
+                </td>
+                <iscomment> rule Group </iscomment>
+                <td><label for="rulesGroup">${Resource.msg('oplux.rule.group', 'opluxAdmin', null)}:</label></td>
+                <td><textarea id="rulesGroup" name="rulesGroup" maxlength="350">${pdict.filterparams.rulesGroup.stringValue || ''}</textarea></td>
+            </tr>
+            <iscomment> event aa result </iscomment>
+            <tr>
+                <td><label for="aaResult">${Resource.msg('oplux.event.aa.result', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <table class="event-aa-result">
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="aaResult" id="aaResultOK" value="OK" ${pdict.filterparams.aaResult.stringValues.contains('OK')? 'checked' : ''}/>
+                                <label for="aaResultOK">${Resource.msg('oplux.event.aa.result.ok', 'opluxAdmin', null)}</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="aaResult" id="aaResultNG" value="NG" ${pdict.filterparams.aaResult.stringValues.contains('NG')? 'checked' : ''}/>
+                                <label for="aaResultNG">${Resource.msg('oplux.event.aa.result.ng', 'opluxAdmin', null)}</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="aaResult" id="aaResultHOLD" value="HOLD" ${(pdict.filterparams.aaResult.stringValues.contains('HOLD') || pdict.selectedMenuItem) ? 'checked' : ''}/>
+                                <label for="aaResultHOLD">${Resource.msg('oplux.event.aa.result.hold', 'opluxAdmin', null)}</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="aaResult" id="aaResultREVIEW" value="REVIEW" ${(pdict.filterparams.aaResult.stringValues.contains('REVIEW') || pdict.selectedMenuItem) ? 'checked' : ''}/>
+                                <label for="aaResultREVIEW">${Resource.msg('oplux.event.aa.result.review', 'opluxAdmin', null)}</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <iscomment> rule description </iscomment>
+                <td><label for="rulesDescription">${Resource.msg('oplux.rule.description', 'opluxAdmin', null)}:</label></td>
+                <td><textarea id="rulesDescription" name="rulesDescription" maxlength="350">${pdict.filterparams.rulesDescription.stringValue || ''}</textarea></td>
+            </tr>
+            <iscomment> visual check event result </iscomment>
+            <tr>
+                <td><label for="maResult">${Resource.msg('oplux.event.ma.result', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <table class="event-ma-result">
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="maResult" id="maResultOK" value="OK" ${pdict.filterparams.maResult.stringValues.contains('OK')? 'checked' : ''}/>
+                                <label for="maResultOK">${Resource.msg('oplux.event.aa.result.ok', 'opluxAdmin', null)}</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="maResult" id="maResultNG" value="NG" ${pdict.filterparams.maResult.stringValues.contains('NG')? 'checked' : ''}/>
+                                <label for="maResultNG">${Resource.msg('oplux.event.aa.result.ng', 'opluxAdmin', null)}</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="maResult" id="maResultHOLD" value="HOLD" ${pdict.filterparams.maResult.stringValues.contains('HOLD')? 'checked' : ''}/>
+                                <label for="maResultHOLD">${Resource.msg('oplux.event.aa.result.hold', 'opluxAdmin', null)}</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <iscomment> visual check event description </iscomment>
+                <td><label for="meResultMemo">${Resource.msg('oplux.event.ma.result.memo', 'opluxAdmin', null)}:</label></td>
+                <td><textarea id="meResultMemo" name="meResultMemo" maxlength="350">${pdict.filterparams.meResultMemo.stringValue || ''}</textarea></td>
+            </tr>
+            <iscomment> blacklist stastus </iscomment>
+            <tr>
+                <td><label for="blackStatus">${Resource.msg('oplux.blacklist.registry', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <select class="border1" name="blackStatus" id="blackStatus">
+                        <option value="">${Resource.msg('oplux.blacklist.unregist.select', 'opluxAdmin', null)}</option>
+                        <option value="0" ${pdict.filterparams.blackStatus.stringValue === "0" ? 'selected' : ''}>${Resource.msg('oplux.blacklist.unregist.status', 'opluxAdmin', null)}</option>
+                        <option value="1" ${pdict.filterparams.blackStatus.stringValue === "1" ? 'selected' : ''}>${Resource.msg('oplux.blacklist.regist.status', 'opluxAdmin', null)}</option>
+                    </select>
+                </td>
+                <iscomment> oplux event error </iscomment>
+                <td><label for="eventError">${Resource.msg('oplux.event.error', 'opluxAdmin', null)}:</label></td>
+                <td><textarea id="eventError" name="eventError" maxlength="350">${pdict.filterparams.eventError.stringValue || ''}</textarea></td>
+            </tr>
+            <iscomment> order status </iscomment>
+            <tr>
+                <td><label for="orderStatus">${Resource.msg('oplux.order.status', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <select class="border1" name="orderStatus" id="orderStatus">
+                        <option value="">${Resource.msg('oplux.order.status.select', 'opluxAdmin', null)}</option>
+                        <option value="created" ${pdict.filterparams.orderStatus.stringValue === "created" ? 'selected' : ''}>${Resource.msg('oplux.order.status.created', 'opluxAdmin', null)}</option>
+                        <option value="new" ${pdict.filterparams.orderStatus.stringValue === "new" ? 'selected' : ''}>${Resource.msg('oplux.order.status.new', 'opluxAdmin', null)}</option>
+                        <option value="open" ${pdict.filterparams.orderStatus.stringValue === "open" ? 'selected' : ''}>${Resource.msg('oplux.order.status.open', 'opluxAdmin', null)}</option>
+                        <option value="completed" ${pdict.filterparams.orderStatus.stringValue === "completed" ? 'selected' : ''}>${Resource.msg('oplux.order.status.completed', 'opluxAdmin', null)}</option>
+                        <option value="failed" ${pdict.filterparams.orderStatus.stringValue === "failed" ? 'selected' : ''}>${Resource.msg('oplux.order.status.failed', 'opluxAdmin', null)}</option>
+                        <option value="cancelled" ${pdict.filterparams.orderStatus.stringValue === "cancelled" ? 'selected' : ''}>${Resource.msg('oplux.order.status.cancelled', 'opluxAdmin', null)}</option>
+                        <option value="replaced" ${pdict.filterparams.orderStatus.stringValue === "replaced" ? 'selected' : ''}>${Resource.msg('oplux.order.status.replaced', 'opluxAdmin', null)}</option>
+                    </select>
+                </td>
+                <iscomment> Order Number </iscomment>
+                <td><label for="orderNo">${Resource.msg('oplux.order.number', 'opluxAdmin', null)}:</label></td>
+                <td>
+                    <input type="text" name="orderNo" value="${pdict.filterparams.orderNo.stringValue || ''}"/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <div class="right infobox_item_search">
+                        <button class="button">${Resource.msg('oplux.filter.search.button', 'opluxAdmin', null)}</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

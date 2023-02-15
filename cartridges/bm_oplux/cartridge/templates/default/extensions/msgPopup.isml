@@ -1,0 +1,11 @@
+<iscomment> Creates popup to show other message </iscomment>
+<div class="msg_popup_overlay">
+    <div class="msg_popup_content">
+        <h2 class="left msg_title"></h2>
+        <div class="msg_detail left ow-anywhere"></div>
+        <iscomment> popup's close button </iscomment>
+        <div class="right">
+            <button class="button msg_popup_close">${Resource.msg('oplux.event.msg.popup.close', 'opluxAdmin', null)}</button>
+        </div>
+    </div>
+</div>

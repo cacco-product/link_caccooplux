@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+
+<menuitem id="oplux_admin_mainmenu" position="999999" site="true">
+  <name xml:lang="x-default">Fraud Detection (O-PLUX)</name>
+  <name xml:lang="ja">不正検知 (O-PLUX)</name>
+  <short_description xml:lang="x-default">Fraud Detection (O-PLUX)</short_description>
+  <short_description xml:lang="ja">不正検知 (O-PLUX)</short_description>
+  <description xml:lang="x-default">Fraud Detection (O-PLUX)</description>
+  <description xml:lang="ja">不正検知 (O-PLUX)</description>
+  <icon>icons/cart.png</icon>
+</menuitem>
+
+<menuaction id="oplux_settings" menupath="oplux_admin_mainmenu" position="1000000" site="true">
+  <name xml:lang="x-default">Orders</name>
+  <name xml:lang="ja">注文一覧</name>
+  <short_description xml:lang="x-default">Fraud Detection Orders</short_description>
+  <short_description xml:lang="ja">不正検知注文一覧</short_description>
+  <description xml:lang="x-default">Orders</description>
+  <description xml:lang="ja">注文一覧</description>
+  <exec pipeline="OpluxAdmin" node="Show"/>
+  <sub-pipelines>
+     <pipeline name="OpluxAdmin-Show" />
+     <pipeline name="OpluxAdmin-EventReRegistration" />
+     <pipeline name="OpluxAdmin-EventUpdate" />
+     <pipeline name="OpluxAdmin-EventUpdateBlacklist" />
+  </sub-pipelines>
+  <parameters>
+  </parameters>
+  <icon>icons/cart.png</icon>
+</menuaction>
+
+</extensions>

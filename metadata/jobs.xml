@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="Oplux_GetEventInfo" priority="0">
+        <description>審査が保留になった、48時間内の注文に目視審査結果が登録されれば状態を更新して再処理する。</description>
+        <parameters />
+        <flow>
+            <context site-id="RefArch" />
+            <step step-id="Oplux_GetEventInfo" type="custom.oplux_GetEventInfo" enforce-restart="false">
+                <description />
+                <parameters />
+            </step>
+        </flow>
+        <rules />
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2020-06-22Z</date-from>
+                    <start-time>16:39:32.000Z</start-time>
+                    <interval>5m</interval>
+                    <day-of-week>
+                        <weekday>Thursday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Monday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Wednesday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="Oplux_UpdateSettleStatus" priority="0">
+        <description>不正審査イベント登録した注文の状況が変わったらそれに合わせてOPLUXの決済ステータスを連動する。</description>
+        <parameters />
+        <flow>
+            <context site-id="RefArch" />
+            <step step-id="Oplux_UpdateSettleStatus" type="custom.oplux_UpdateSettleStatus" enforce-restart="false">
+                <description />
+                <parameters />
+            </step>
+        </flow>
+        <rules />
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2020-06-22Z</date-from>
+                    <start-time>16:40:22.000Z</start-time>
+                    <interval>1m</interval>
+                    <day-of-week>
+                        <weekday>Thursday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Monday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Wednesday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+</jobs>

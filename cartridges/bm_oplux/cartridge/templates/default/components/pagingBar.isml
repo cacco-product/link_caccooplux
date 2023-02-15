@@ -1,0 +1,122 @@
+<iscomment> PAGING </iscomment>
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<isif condition="${!pdict.pagingmodel.empty}">
+    <isset name="pagingInfo" value="${require('*/cartridge/scripts/utils/pagingHelpers').getPagingInfo(pdict.pagingmodel, pdict.pageurl)}" scope="page" />
+    <isset name="totalCount" value="${pagingInfo.totalCount}" scope="page" />
+    <isset name="pageSize" value="${pagingInfo.pageSize}" scope="page" />
+    <isset name="showingStart" value="${pagingInfo.showingStart}" scope="page" />
+    <isset name="showingEnd" value="${pagingInfo.showingEnd}" scope="page" />
+    <isset name="pageURL" value="${pagingInfo.pageURL}" scope="page" />
+    <isset name="maxPage" value="${pagingInfo.maxPage}" scope="page" />
+    <isset name="pagingUrl" value="${pagingInfo.pagingUrl}" scope="page" />
+    <isset name="current" value="${pagingInfo.current}" scope="page" />
+    <isset name="currentPage" value="${pagingInfo.currentPage}" scope="page" />
+    <isset name="rangeBegin" value="${pagingInfo.rangeBegin}" scope="page" />
+    <isset name="rangeEnd" value="${pagingInfo.rangeEnd}" scope="page" />
+    <table width="100%" class="pagecursor">
+        <tbody>
+            <tr>
+                <td>
+                    <table cellspacing="1" cellpadding="1" border="0" width="100%" class="pagecursor">
+                        <tbody>
+                            <tr>
+                                <td nowrap="nowrap" width="40%" align="left" class="pagecursortxt top">
+                                    ${Resource.msg('oplux.paging.showing', 'opluxAdmin', null)}
+                                    <isif condition="${totalCount == 1 || totalCount < pageSize}">
+                                        <span class="pagecursoritem bold">
+                                            <isprint value="${StringUtils.formatInteger(totalCount)}"/>
+                                        </span>
+                                    <iselse/>
+                                        <span class="pagecursoritem bold">
+                                            <isprint value="${StringUtils.formatInteger(showingStart)}"/>
+                                        </span>
+                                        <isprint value="${'-'}" formatter="0"/>
+                                        <span class="pagecursoritem bold">
+                                            <isprint value="${StringUtils.formatInteger(showingEnd)}"/>
+                                        </span>
+                                        <isprint value="${'of'}" formatter="0"/>
+                                        <span class="pagecursoritem bold">
+                                            <isprint value="${StringUtils.formatInteger(totalCount)}"/>
+                                        </span>
+                                    </isif>
+                                    ${Resource.msg('oplux.paging.item', 'opluxAdmin', null)}
+                                </td>
+
+                                <iscomment> page size </iscomment>
+                                <td nowrap="nowrap" class="pagecursortxt top">
+                                    <isif condition="${totalCount > 10}">
+                                        <isprint value="${Resource.msg('oplux.pagesize.show', 'opluxAdmin', null)}"/>
+                                        <isif condition="${pageSize != 10}">
+                                            <a class="pagecursorbtn perm_not_disabled mr5px" href="${decodeURI(pageURL + "&sz=10")}">
+                                                ${Resource.msg('oplux.pagesize.01', 'opluxAdmin', null)}
+                                            </a>
+                                        </isif>
+                                        <isif condition="${pageSize != 50}">
+                                            <a class="pagecursorbtn perm_not_disabled mr5px" href="${decodeURI(pageURL + "&sz=50")}">
+                                                ${Resource.msg('oplux.pagesize.02', 'opluxAdmin', null)}
+                                            </a>
+                                        </isif>
+                                        <isif condition="${pageSize != 100}">
+                                            <a class="pagecursorbtn perm_not_disabled mr5px" href="${decodeURI(pageURL + "&sz=100")}">
+                                                ${Resource.msg('oplux.pagesize.03', 'opluxAdmin', null)}
+                                            </a>
+                                        </isif>
+                                        <isprint value="${Resource.msg('oplux.pagesize.items', 'opluxAdmin', null)}"/>
+                                    </isif>
+                                </td>
+
+                                <iscomment> Show Pagination </iscomment>
+                                <isif condition="${maxPage >= 1}">
+                                    <iscomment> First & Previous </iscomment>
+                                    <isif condition="${(currentPage > 0) && (maxPage > 4)}">
+                                        <td width="1" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pagingUrl + "&start=0")}">
+                                                <span>${Resource.msg('oplux.paging.first', 'opluxAdmin', null)}</span>
+                                            </a>
+                                        </td>
+                                        <td width="11" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pagingUrl + "&start=" + (current - pageSize))}">
+                                                <span>${Resource.msg('oplux.paging.previous', 'opluxAdmin', null)}</span>
+                                            </a>
+                                        </td>
+                                    </isif>
+                                    <iscomment> Page Number </iscomment>
+                                    <isloop status="i" begin="${rangeBegin}" end="${rangeEnd}">
+                                        <isif condition="${i.index != currentPage}">
+                                            <td width="1" class="pagecursortxt">
+                                                <a class="pagecursorbtn perm_not_disabled page-<isprint value="${i.index + 1}" formatter="0"/>" href="${decodeURI(pagingUrl + "&start=" + (current + (i.index - currentPage) * pageSize))}">
+                                                    <isprint value="${i.index + 1}" formatter="0"/>
+                                                </a>
+                                            </td>
+                                        <iselse/>
+                                            <td width="1" class="pagecursoritem top">
+                                                <b>
+                                                    <isprint value="${'['}" formatter="0"/><isprint value="${i.index + 1}" formatter="0"/><isprint value="${']'}" formatter="0"/>
+                                                </b>
+                                            </td>
+                                        </isif>
+                                    </isloop>
+
+                                    <iscomment> Last & Next </iscomment>
+                                    <isif condition="${(current < totalCount - pageSize) && (maxPage > 4)}">
+                                        <td width="1" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pagingUrl + "&start=" + (current + pageSize))}">
+                                                <span>${Resource.msg('oplux.paging.next', 'opluxAdmin', null)}</span>
+                                            </a>
+                                        </td>
+                                        <td width="1" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pagingUrl + "&start=" + (current + (maxPage - currentPage) * pageSize))}">
+                                                <span>${Resource.msg('oplux.paging.last', 'opluxAdmin', null)}</span>
+                                            </a>
+                                        </td>
+                                    </isif>
+                                </isif>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</isif>
+<iscomment> END PAGING </iscomment>

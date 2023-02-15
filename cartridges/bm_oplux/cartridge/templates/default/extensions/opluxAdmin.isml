@@ -1,0 +1,153 @@
+<isdecorate template="application/MenuFrame">
+    <iscontent type="text/html" charset="UTF-8" />
+    <isinclude template="inc/Modules"/>
+    <isinclude template="util/modules"/>
+    <link href="${URLUtils.staticURL('/css/opluxCustomStyle.css')}" type="text/css" rel="stylesheet" />
+    <isset scope="page" value="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', pdict.CurrentMenuItemId)}" name="TOP_URL"/>
+    <isbreadcrumb name1="${pdict.MainmenuName}" url1="${TOP_URL}" name2="${Resource.msg('common.viewparts.breadcrumb.title', 'opluxAdmin', null)}" />
+    <h1 class="overview_title">${Resource.msg('oplux.admin.title', 'opluxAdmin', null)}</h1>
+
+    <iscomment> Filter Form </iscomment>
+    <isfilterform filterparams="${pdict.filterParams}" />
+    <iscomment> Filter Form END </iscomment>
+
+    <iscomment> Data Contents </iscomment>
+    <div class="oplux_data_contents">
+        <span class="error errorMsg"></span>
+        <isif condition="${pdict.total == 0}">
+            <iscomment> Data Empty </iscomment>
+            <div class="empty_data center">
+                <span>${Resource.msg('oplux.nocontent.msg', 'opluxAdmin', null)}</span>
+            </div>
+        <iselse/>
+            <iscomment> Collection size is over 20000 </iscomment>
+            <isif condition="${pdict.isOverSize}">
+                <div class="center">
+                    <span>
+                        ${Resource.msg('oplux.oversize.msg', 'opluxAdmin', null)}
+                    </span>
+                </div>
+            </isif>
+            <table class="review_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <iscomment> column title </iscomment>
+                    <tr>
+                        <th nowrap="nowrap" class="table_header w n e s center">${Resource.msg('oplux.order.number', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.order.date', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.customer', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.order.status', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.response.result', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">
+                            ${Resource.msg('oplux.check.again', 'opluxAdmin', null)}
+                            <input type="checkbox" id="check_all"/>
+                        </th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.event.aa.result', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.event.ma.result', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.event.ma.result.memo', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.blacklist.registry', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.rule.code', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.rule.group', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.rule.description', 'opluxAdmin', null)}</th>
+                        <th nowrap="nowrap" class="table_header n e s center">${Resource.msg('oplux.event.error', 'opluxAdmin', null)}</th>
+                    </tr>
+                    <iscomment> show list reviewing items </iscomment>
+                    <isloop iterator="${pdict.OrderPagingModel.pageElements}" var="order">
+                        <isset name="Calendar" value="${require('dw/util/Calendar')}" scope="page" />
+                        <isset name="StringUtils" value="${require('dw/util/StringUtils')}" scope="page" />
+                        <isset name="Site" value="${require('dw/system/Site')}" scope="page" />
+                        <isset name="OrderClass" value="${require('dw/order/Order')}" scope="page" />
+                        <isscript>
+                            var creationDate = new Calendar(order.creationDate);
+                            creationDate.setTimeZone(Site.current.timezone);
+                        </isscript>
+                        <isset name="creationDateString" value="${StringUtils.formatCalendar(creationDate, "yyyy/MM/dd hh:mm:ss a")}" scope="page" />
+                        <isset name="ruleCode" value="${order.custom.oplux_rule_code ? order.custom.oplux_rule_code : ' '}" scope="page" />
+                        <isset name="ruleGroup" value="${order.custom.oplux_rule_group ? order.custom.oplux_rule_group : ' '}" scope="page" />
+                        <isset name="ruleDescription" value="${order.custom.oplux_rule_description ? order.custom.oplux_rule_description : ''}" scope="page" />
+                        <isset name="errorMsg" value="${order.custom.oplux_error ? order.custom.oplux_error : ''}" scope="page" />
+                        <isset name="maResult" value="${order.custom.oplux_event_ma_result.toString()}" scope="page" />
+                        <isset name="maResultMemo" value="${order.custom.oplux_event_ma_result_memo ? order.custom.oplux_event_ma_result_memo : ''}" scope="page" />
+                        <isset name="blackedStatus" value="${order.custom.oplux_blacked_flag}" scope="page" />
+                        <isset name="isFinished" value="${order.custom.oplux_response_result != null && order.custom.oplux_response_result == '10'}" scope="page" />
+                        <isset name="isOrderStatusValid" value="${(order.status == OrderClass.ORDER_STATUS_NEW || order.status == OrderClass.ORDER_STATUS_OPEN || order.status == OrderClass.ORDER_STATUS_REPLACED)}" scope="page" />
+                        <isset name="responseResult" value="${isFinished ? Resource.msg('oplux.response.result.finish', 'opluxAdmin', null) : Resource.msg('oplux.response.result.error', 'opluxAdmin', null)}" scope="page" />
+                        <isset name="unableToUpdate" value="${!isOrderStatusValid || order.getExportStatus().value == OrderClass.EXPORT_STATUS_EXPORTED}" scope="page" />
+                        <tr id="order_${order.orderNo}" class="${!isFinished ? 'row_error' : ''}">
+                            <td nowrap="nowrap" class="table_detail w e s center">
+                                <a href="${URLUtils.abs('ViewOrder_52-FindByNumber', 'OrderNo', order.orderNo)}" target="_blank" name="orderNo">${order.orderNo}</a>
+                            </td>
+                            <td nowrap="nowrap" class="table_detail e s center">${creationDateString}</td>
+                            <td nowrap="nowrap" class="table_detail e s center">${order.customerName}</td>
+                            <td nowrap="nowrap" class="table_detail e s center" name="orderStatus">${order.status}</td>
+                            <td nowrap="nowrap" class="table_detail e s center" name="responseResult">${responseResult}</td>
+                            <td nowrap="nowrap" class="table_detail e s center">
+                                <isif condition="${!isFinished && isOrderStatusValid}">
+                                    <input type="checkbox" name="opluxCheckAgain" value="${order.orderNo}" />
+                                </isif>
+                            </td>
+                            <td class="table_detail e s center" name="aaResult">${order.custom.oplux_event_aa_result.toString()}</td>
+                            <td nowrap="nowrap" class="table_detail e s center" name="maResult">
+                                <iscomment> update oplux event status button </iscomment>
+                                <isif condition="${isFinished}">
+                                    <button class="button ${unableToUpdate == true ? 'unClickable' : ''}" name="changeStatus" data-url="${URLUtils.url('OpluxAdmin-EventUpdate')}" value="OK" ${maResult == 'OK' ? 'disabled' : ''}>${Resource.msg('oplux.event.aa.result.ok', 'opluxAdmin', null)}</button>
+                                    <button class="button ${unableToUpdate == true ? 'unClickable' : ''}" name="changeStatus" data-url="${URLUtils.url('OpluxAdmin-EventUpdate')}" value="NG" ${maResult == 'NG' ? 'disabled' : ''}>${Resource.msg('oplux.event.aa.result.ng', 'opluxAdmin', null)}</button>
+                                    <button class="button ${unableToUpdate == true ? 'unClickable' : ''}" name="changeStatus" data-url="${URLUtils.url('OpluxAdmin-EventUpdate')}" value="HOLD" ${maResult == 'HOLD' ? 'disabled' : ''}>${Resource.msg('oplux.event.aa.result.hold', 'opluxAdmin', null)}</button>
+                                </isif>
+                            </td>
+                            <td class="table_detail e s w200px" name="maResultMemo">
+                                <iscomment> maResultMemo </iscomment>
+                                <div class="fl-left text_limited" id="maMemo" name="maMemo">
+                                    ${maResultMemo}
+                                </div>
+                                <isif condition="${isFinished}">
+                                    <div class="fl-right">
+                                        <button class="button ${unableToUpdate == true ? 'unClickable' : ''}" name="maResultMemoChange" data-url="${URLUtils.url('OpluxAdmin-EventUpdate')}">${Resource.msg('oplux.blacklist.regist', 'opluxAdmin', null)}</button>
+                                    </div>
+                                </isif>
+                            </td>
+                            <td nowrap="nowrap" class="table_detail e s center" name="blackedStatus">
+                                <iscomment> blacklist regist button </iscomment>
+                                <isif condition="${isFinished}">
+                                    <button class="button" name="blacklistRegist" ${blackedStatus == true ? 'disabled' : ''} data-url="${URLUtils.url('OpluxAdmin-EventUpdateBlacklist')}" value="1">
+                                        ${blackedStatus == true ? Resource.msg('oplux.blacklist.regist.status', 'opluxAdmin', null) : Resource.msg('oplux.blacklist.regist', 'opluxAdmin', null)}
+                                    </button>
+                                    <button class="button" name="blacklistCancel" ${blackedStatus == true ? '' : 'disabled'} data-url="${URLUtils.url('OpluxAdmin-EventUpdateBlacklist')}" value="0">
+                                        ${blackedStatus == true ? Resource.msg('oplux.blacklist.unregist', 'opluxAdmin', null) : Resource.msg('oplux.blacklist.unregist.status', 'opluxAdmin', null)}
+                                    </button>
+                                </isif>
+                            </td>
+                            <td class="table_detail e s" name="ruleCode"><div class="text_limited">${ruleCode}</div></td>
+                            <td class="table_detail e s" name="ruleGroup"><div class="text_limited">${ruleGroup}</div></td>
+                            <td class="table_detail e s" name="ruleDesc"><div class="text_limited">${ruleDescription}</div></td>
+                            <td class="table_detail e s" name="eventErrorMsg"><div class="text_limited">${errorMsg}</div></td>
+                        </tr>
+                    </isloop>
+                </tbody>
+            </table>
+
+            <iscomment> Creates the popup to show full text </iscomment>
+            <isinclude template="extensions/msgPopup" sf-toolkit="on" />
+
+            <iscomment> Creates the popup content </iscomment>
+            <isinclude template="extensions/maMemoPopup" sf-toolkit="on" />
+
+            <iscomment> Creates the popup confirm </iscomment>
+            <isinclude template="extensions/confirmPopup" sf-toolkit="on" />
+
+            <iscomment> Creates the blacklist popup content </iscomment>
+            <isinclude template="extensions/blacklistPopup" sf-toolkit="on" />
+
+            <iscomment> Reregistration button </iscomment>
+            <div class="right infobox_item_search">
+                <button class="button check_again_button" data-url="${URLUtils.url('OpluxAdmin-EventReRegistration')}" disabled="disabled">${Resource.msg('oplux.check.again', 'opluxAdmin', null)}</button>
+            </div>
+
+            <iscomment> PAGING </iscomment>
+            <ispagingbar pageurl="${request.getHttpURL().toString()}" pagingmodel="${pdict.OrderPagingModel}"/>
+            <iscomment> PAGING END </iscomment>
+        </isif>
+    </div>
+    <iscomment> change status button click handler </iscomment>
+    <script charset="UTF-8" src="${URLUtils.staticURL('/js/jquery-3.5.1.min.js')}"></script>
+    <script charset="UTF-8" src="${URLUtils.staticURL('/js/formHandler.js')}"></script>
+</isdecorate>

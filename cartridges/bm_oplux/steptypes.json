@@ -1,0 +1,52 @@
+{
+  "step-types": {
+    "script-module-step": [
+      {
+        "@type-id": "custom.oplux_GetEventInfo",
+        "module": "bm_oplux/cartridge/scripts/jobs/opluxGetEventInfo.js",
+        "function": "execute",
+        "transactional": "false",
+        "@supports-site-context": true,
+        "@supports-organization-context": true,
+        "parameters": {
+          "parameter": []
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when everything went well."
+            }
+          ]
+        }
+      },
+      {
+        "@type-id": "custom.oplux_UpdateSettleStatus",
+        "module": "bm_oplux/cartridge/scripts/jobs/opluxUpdateSettleStatus.js",
+        "function": "execute",
+        "transactional": "false",
+        "@supports-site-context": true,
+        "@supports-organization-context": true,
+        "parameters": {
+          "parameter": []
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when execution was successful."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+<iscomment>
+	Creates a paging bar on the page
+</iscomment>
+<ismodule template = "components/pagingBar"
+	name="pagingbar"
+	attribute="pageurl"
+	attribute="pagingmodel"
+/>
+
+<iscomment>
+	Creates orders filter form for oplux
+</iscomment>
+<ismodule template="components/filterForm"
+	name="filterform"
+	attribute="filterparams"
+/>

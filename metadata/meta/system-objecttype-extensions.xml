@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="oplux_black_customer_type">
+                <display-name xml:lang="x-default">Blacklist Type</display-name>
+                <display-name xml:lang="ja-JP">ブラック登録対象</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Buyer</display>
+                        <display xml:lang="ja-JP">申込者</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Shipping Address</display>
+                        <display xml:lang="ja-JP">配送先</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Buyer&amp;Shipping Address</display>
+                        <display xml:lang="ja-JP">購入者&amp;配送先</display>
+                        <value>30</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_black_other_category">
+                <display-name xml:lang="x-default">Other Blacklist Category</display-name>
+                <display-name xml:lang="ja-JP">その他ブラックカテゴリ</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Comprehensive NG</display>
+                        <display xml:lang="ja-JP">総合判断NG</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Illicit Acquisition of Samples</display>
+                        <display xml:lang="ja-JP">サンプル品の不正取得</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Vicious Claimant</display>
+                        <display xml:lang="ja-JP">悪質なクレーマ</display>
+                        <value>30</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Illicit Acquisition of Tickets</display>
+                        <display xml:lang="ja-JP">不正チケット取得</display>
+                        <value>40</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Business Operators or Corporations</display>
+                        <display xml:lang="ja-JP">事業者・法人</display>
+                        <value>50</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Cell Phone</display>
+                        <display xml:lang="ja-JP">携帯端末</display>
+                        <value>60</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Other Reason of Order</display>
+                        <display xml:lang="ja-JP">その他申込関連</display>
+                        <value>70</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Rental</display>
+                        <display xml:lang="ja-JP">レンタル</display>
+                        <value>80</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_black_settle_category">
+                <display-name xml:lang="x-default">Payment Blacklist Category</display-name>
+                <display-name xml:lang="ja-JP">ブラック決済カテゴリ</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">"Bill me later" is not Paid</display>
+                        <display xml:lang="ja-JP">後払い決済での不払い</display>
+                        <value>01</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Pay with illegal Credit Card</display>
+                        <display xml:lang="ja-JP">不正クレジットカード決済</display>
+                        <value>02</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Refusal to Take Over</display>
+                        <display xml:lang="ja-JP">代引受取拒否</display>
+                        <value>03</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Reselling</display>
+                        <display xml:lang="ja-JP">転売</display>
+                        <value>04</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Exchange Bonus Point</display>
+                        <display xml:lang="ja-JP">ポイント交換</display>
+                        <value>05</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_blacked_flag">
+                <display-name xml:lang="x-default">Blacklist Register Flag</display-name>
+                <display-name xml:lang="ja-JP">ブラック登録フラグ</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_customer_notification_mail_sent_flag">
+                <display-name xml:lang="x-default">Sent Notification Mail to Customer</display-name>
+                <display-name xml:lang="ja-JP">oplux購入者へのメール通知ステータス</display-name>
+                <description xml:lang="x-default">購入者へのメール通知ステータス</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_error">
+                <display-name xml:lang="x-default">Oplux Error Description</display-name>
+                <display-name xml:lang="ja-JP">Oplux エラー詳細</display-name>
+                <description xml:lang="x-default">opluxから受け取った最新のerrorのtimeとcodeとmessage　※上書き保存</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_aa_result">
+                <display-name xml:lang="x-default">Auto Inspection Result</display-name>
+                <display-name xml:lang="ja-JP">自動審査結果</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">OK</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">NG</display>
+                        <value>NG</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">HOLD</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">REVIEW</display>
+                        <value>REVIEW</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_api_response_json">
+                <display-name xml:lang="x-default">O-PLUX Response JSON</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_id">
+                <display-name xml:lang="x-default">Oplux Event ID</display-name>
+                <display-name xml:lang="ja-JP">opluxイベントID</display-name>
+                <description xml:lang="x-default">Event ID from Oplux</description>
+                <description xml:lang="ja-JP">opluxから受け取ったeventID</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_ma_result">
+                <display-name xml:lang="x-default">Oplux Manual Inspection Result Code</display-name>
+                <display-name xml:lang="ja-JP">oplux目視審査結果コード</display-name>
+                <description xml:lang="x-default">maresult from Oplux response.</description>
+                <description xml:lang="ja-JP">opluxから受け取ったmaresult（目視審査結果コード）</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">OK</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">NG</display>
+                        <value>NG</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">HOLD</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_ma_result_memo">
+                <display-name xml:lang="x-default">Manual Inspection Memo</display-name>
+                <display-name xml:lang="ja-JP">目視審査メモ</display-name>
+                <description xml:lang="x-default">maresult.memo from Oplux Response</description>
+                <description xml:lang="ja-JP">opluxから受け取ったmaresult.memo</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_response_result">
+                <display-name xml:lang="x-default">Response Result</display-name>
+                <display-name xml:lang="ja-JP">処理結果</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">SUCCESS</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">ERROR</display>
+                        <value>20</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_code">
+                <display-name xml:lang="x-default">Rule Codes</display-name>
+                <display-name xml:lang="ja-JP">ルールコード</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_description">
+                <display-name xml:lang="x-default">Rule Descriptions</display-name>
+                <display-name xml:lang="ja-JP">ルール説明文</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_group">
+                <display-name xml:lang="x-default">Rule Groups</display-name>
+                <display-name xml:lang="ja-JP">ルールグループ</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_settle_status">
+                <display-name xml:lang="x-default">Settle Status for Oplux</display-name>
+                <display-name xml:lang="ja-JP">O-PLUXへ連携した決済ステータス</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Before Charge</display>
+                        <display xml:lang="ja-JP">請求前</display>
+                        <value>00</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charging</display>
+                        <display xml:lang="ja-JP">請求中</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charged</display>
+                        <display xml:lang="ja-JP">支払済</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Payment is Overdue</display>
+                        <display xml:lang="ja-JP">期限超過</display>
+                        <value>30</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Entrusted</display>
+                        <display xml:lang="ja-JP">委託済</display>
+                        <value>40</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Bad Debt</display>
+                        <display xml:lang="ja-JP">貸倒</display>
+                        <value>50</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charge Back</display>
+                        <display xml:lang="ja-JP">チャージバック</display>
+                        <value>60</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Canceled</display>
+                        <display xml:lang="ja-JP">キャンセル</display>
+                        <value>99</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Canceled after Shipped</display>
+                        <display xml:lang="ja-JP">送付後キャンセル</display>
+                        <value>100</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_skip_update_settle_status">
+                <display-name xml:lang="x-default">oplux_skip_update_settle_status</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_device_info">
+                <display-name xml:lang="x-default">エンドユーザのデバイス情報</display-name>
+                <description xml:lang="x-default">エンドユーザのデバイス情報。イベント登録API設計で記述した、デ バイス情報取得のJavaScriptで取得できた値をセット</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="oplux_custom_attributes">
+                <display-name xml:lang="x-default">oplux_custom_attributes</display-name>
+                <attribute attribute-id="oplux_event_id" />
+                <attribute attribute-id="oplux_response_result" />
+                <attribute attribute-id="oplux_event_ma_result" />
+                <attribute attribute-id="oplux_event_ma_result_memo" />
+                <attribute attribute-id="oplux_error" />
+                <attribute attribute-id="oplux_customer_notification_mail_sent_flag" />
+                <attribute attribute-id="oplux_settle_status" />
+                <attribute attribute-id="oplux_rule_code" />
+                <attribute attribute-id="oplux_rule_group" />
+                <attribute attribute-id="oplux_rule_description" />
+                <attribute attribute-id="oplux_blacked_flag" />
+                <attribute attribute-id="oplux_black_settle_category" />
+                <attribute attribute-id="oplux_black_customer_type" />
+                <attribute attribute-id="oplux_black_other_category" />
+                <attribute attribute-id="oplux_event_aa_result" />
+                <attribute attribute-id="oplux_skip_update_settle_status" />
+                <attribute attribute-id="oplux_device_info" />
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="Basket">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="oplux_black_customer_type">
+                <display-name xml:lang="x-default">Blacklist Type</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Buyer</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Shipping Address</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Buyer&amp;Shipping Address</display>
+                        <value>30</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_black_other_category">
+                <display-name xml:lang="x-default">Other Blacklist Category</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Comprehensive NG</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Illicit Acquisition of Samples</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Vicious Claimant</display>
+                        <value>30</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Illicit Acquisition of Tickets</display>
+                        <value>40</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Business Operators or Corporations</display>
+                        <value>50</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Cell Phone</display>
+                        <value>60</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Other Reason of Order</display>
+                        <value>70</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Rental</display>
+                        <value>80</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_black_settle_category">
+                <display-name xml:lang="x-default">Payment Blacklist Category</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">"Bill me later" is not Paid</display>
+                        <value>01</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Pay with illegal Credit Card</display>
+                        <value>02</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Refusal to Take Over</display>
+                        <value>03</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Reselling</display>
+                        <value>04</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Exchange Bonus Point</display>
+                        <value>05</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_blacked_flag">
+                <display-name xml:lang="x-default">Blacklist Register Flag</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_customer_notification_mail_sent_flag">
+                <display-name xml:lang="x-default">Sent Notification Mail to Customer</display-name>
+                <description xml:lang="x-default">購入者へのメール通知ステータス</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_device_info">
+                <display-name xml:lang="x-default">エンドユーザのデバイス情報</display-name>
+                <description xml:lang="x-default">エンドユーザのデバイス情報。カスタム環境設定で設定したURLから取得した値をセット</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_error">
+                <display-name xml:lang="x-default">Oplux Error Description</display-name>
+                <description xml:lang="x-default">opluxから受け取った最新のerrorのtimeとcodeとmessage　※上書き保存</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_aa_result">
+                <display-name xml:lang="x-default">Auto Inspection Result</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">OK</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">NG</display>
+                        <value>NG</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">HOLD</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">REVIEW</display>
+                        <value>REVIEW</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_api_response_json">
+                <display-name xml:lang="x-default">O-PLUX Response JSON</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_id">
+                <display-name xml:lang="x-default">Oplux Event ID</display-name>
+                <description xml:lang="x-default">Event ID from Oplux</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_ma_result">
+                <display-name xml:lang="x-default">Oplux Manual Inspection Result Code</display-name>
+                <description xml:lang="x-default">maresult from Oplux response.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">OK</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">NG</display>
+                        <value>NG</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">HOLD</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_event_ma_result_memo">
+                <display-name xml:lang="x-default">Manual Inspection Memo</display-name>
+                <description xml:lang="x-default">maresult.memo from Oplux Response</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_response_result">
+                <display-name xml:lang="x-default">Response Result</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">SUCCESS</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">ERROR</display>
+                        <value>20</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_code">
+                <display-name xml:lang="x-default">Rule Codes</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_description">
+                <display-name xml:lang="x-default">Rule Descriptions</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_rule_group">
+                <display-name xml:lang="x-default">Rule Groups</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_settle_status">
+                <display-name xml:lang="x-default">Settle Status for Oplux</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Before Charge</display>
+                        <value>00</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charging</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charged</display>
+                        <value>20</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Payment is Overdue</display>
+                        <value>30</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Entrusted</display>
+                        <value>40</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Bad Debt</display>
+                        <value>50</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Charge Back</display>
+                        <value>60</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Canceled</display>
+                        <value>99</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Canceled after Shipped</display>
+                        <value>100</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_skip_update_settle_status">
+                <display-name xml:lang="x-default">oplux_skip_update_settle_status</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Status">
+                <display-name xml:lang="x-default">Status</display-name>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="PaymentMethod">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="oplux_model_id">
+                <display-name xml:lang="x-default">Oplux Inspection Model ID</display-name>
+                <display-name xml:lang="ja-JP">O-PLUXの審査に使うモデルID</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_payment_method">
+                <display-name xml:lang="x-default">Payment type for Oplux</display-name>
+                <display-name xml:lang="ja-JP">支払い方法の種類</display-name>
+                <description xml:lang="x-default">01:Bill Me Later 02:Credit Card 03:Cash on Delivery 04:Prepayment 05:Electronic Money 06:Bonus Point 07:Bank Transfer 08:Installments 09:Payeasy 10:PayPal 99:ETC</description>
+                <description xml:lang="ja-JP">01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マ ネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy 10:PayPal 99:その他</description>
+                <type>enum-of-string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Bill Me Later</display>
+                        <display xml:lang="ja-JP">後払い</display>
+                        <value>01</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">クレジットカード決済</display>
+                        <display xml:lang="ja-JP">Credit Card</display>
+                        <value>02</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Cash on Delivery</display>
+                        <display xml:lang="ja-JP">代金引換</display>
+                        <value>03</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Prepayment</display>
+                        <display xml:lang="ja-JP">前払い</display>
+                        <value>04</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Electronic Money</display>
+                        <display xml:lang="ja-JP">電子マ ネー</display>
+                        <value>05</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Bonus Point</display>
+                        <display xml:lang="ja-JP">ポイント支払</display>
+                        <value>06</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Bank Transfer</display>
+                        <display xml:lang="ja-JP">口座振替</display>
+                        <value>07</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Installments</display>
+                        <display xml:lang="ja-JP">分割払い</display>
+                        <value>08</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Payeasy</display>
+                        <value>09</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">PayPal</display>
+                        <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">ETC</display>
+                        <display xml:lang="ja-JP">その他</display>
+                        <value>99</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="OPLUX">
+                <display-name xml:lang="x-default">OPLUX</display-name>
+                <attribute attribute-id="oplux_model_id" />
+                <attribute attribute-id="oplux_payment_method" />
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="oplux_application_id">
+                <display-name xml:lang="x-default">Application ID</display-name>
+                <display-name xml:lang="ja-JP">接続元ID</display-name>
+                <description xml:lang="x-default">接続元ID（シグネチャ生成に使用）</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_get_device_info_url">
+                <display-name xml:lang="x-default">Device Info Javascript URL</display-name>
+                <display-name xml:lang="ja-JP">デバイス情報取得先 URL</display-name>
+                <description xml:lang="x-default">opluxから配布された値を設定</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>//fraud-buster.appspot.com/js/fraudbuster.js</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_order_status_for_api_error_limit">
+                <display-name xml:lang="x-default">Order Handling when OPLUX Request Error</display-name>
+                <display-name xml:lang="ja-JP">審査登録リクエストがエラーの場合の注文ステータス</display-name>
+                <description xml:lang="x-default">審査のイベント登録リクエストがエラーしてリトライ回数も上限に達した場合の注文ステータス</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Order Success</display>
+                        <display xml:lang="ja-JP">注文成功</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Order Success(No Export)</display>
+                        <display xml:lang="ja-JP">注文成功(出荷保留)</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Order Failed</display>
+                        <display xml:lang="ja-JP">注文失敗</display>
+                        <value>FAILED</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_order_status_for_review_hold">
+                <display-name xml:lang="x-default">Order Handling when Inspection Result is REVIEW or HOLD</display-name>
+                <display-name xml:lang="ja-JP">審査結果がREVIEW/HOLDの場合の注文ステータス</display-name>
+                <description xml:lang="x-default">審査結果がREVIEW/HOLDの場合に設定する注文のステータスの指定。</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Order Success</display>
+                        <display xml:lang="ja-JP">注文成功</display>
+                        <value>OK</value>
+                    </value-definition>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Order Success(No Export)</display>
+                        <display xml:lang="ja-JP">注文成功(出荷保留)</display>
+                        <value>HOLD</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Order Failed</display>
+                        <display xml:lang="ja-JP">注文失敗</display>
+                        <value>FAILED</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_run_background_job">
+                <display-name xml:lang="x-default">Manual Inspection On/Off</display-name>
+                <display-name xml:lang="ja-JP">目視審査サービスを使用</display-name>
+                <description xml:lang="x-default">目視審査サービスを使うかどうかの設定</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_secret_access_id">
+                <display-name xml:lang="x-default">Secret Access ID</display-name>
+                <display-name xml:lang="ja-JP">シークレットキー</display-name>
+                <description xml:lang="x-default">opluxから配布された値を設定</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="oplux_shop_id">
+                <display-name xml:lang="x-default">Shop ID</display-name>
+                <display-name xml:lang="ja-JP">ショップID</display-name>
+                <description xml:lang="x-default">O-PLUXで利用する加盟店様のID。運用開始前にご連絡いたしま す。</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="OpluxConfigs">
+                <display-name xml:lang="x-default">OpluxConfigs</display-name>
+                <attribute attribute-id="oplux_get_device_info_url" />
+                <attribute attribute-id="oplux_application_id" />
+                <attribute attribute-id="oplux_secret_access_id" />
+                <attribute attribute-id="oplux_shop_id" />
+                <attribute attribute-id="oplux_order_status_for_api_error_limit" />
+                <attribute attribute-id="oplux_order_status_for_review_hold" />
+                <attribute attribute-id="oplux_run_background_job" />
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+</metadata>

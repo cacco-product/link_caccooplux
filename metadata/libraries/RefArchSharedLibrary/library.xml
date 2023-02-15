@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.demandware.com/xml/impex/library/2006-10-31" library-id="RefArchSharedLibrary">
+    <content content-id="opluxEventNG">
+        <display-name xml:lang="x-default">opluxEventNG</display-name>
+        <online-flag>true</online-flag>
+        <searchable-flag>false</searchable-flag>
+        <page-attributes/>
+        <custom-attributes>
+            <custom-attribute attribute-id="body" xml:lang="x-default">&lt;div class="hero slant-down error-hero"&gt;&#13;
+        &lt;h1 class="page-title"&gt;お知らせ&lt;/h1&gt;&#13;
+    &lt;/div&gt;&#13;
+&#13;
+    &lt;div class="container"&gt;&#13;
+        &lt;p class="text-center"&gt;ガイドラインによりご購入ができません。&lt;/p&gt;&#13;
+        &lt;p class="text-center"&gt;別のお支払方法でご購入ください。&lt;/p&gt;&#13;
+        &lt;div class="row"&gt;&#13;
+            &lt;div class="col-sm-6 offset-sm-3"&gt;&#13;
+                &lt;a href="$httpsUrl('Home-Show')$" class="btn btn-primary btn-block error continue-shopping" role="button" aria-pressed="true"&gt;&#13;
+                    ホームに戻す&#13;
+                &lt;/a&gt;&#13;
+            &lt;/div&gt;&#13;
+        &lt;/div&gt;&#13;
+    &lt;/div&gt;</custom-attribute>
+        </custom-attributes>
+    </content>
+</library>

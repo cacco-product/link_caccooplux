@@ -1,0 +1,14 @@
+<iscomment> Creates the popup content </iscomment>
+<div class="popup_overlay">
+    <div class="popup_content">
+        <h2 class="left">${Resource.msg('oplux.event.ma.result.memo', 'opluxAdmin', null)}</h2>
+        <p><textarea class="auto_resize" name="newMaMemo" maxlength="500"></textarea></p>
+        <input type="hidden" name="orderNo" value="" />
+        <input type="hidden" name="url" value="" />
+        <iscomment> popup's close button </iscomment>
+        <div class="right">
+            <button class="button ma_memo_cancel">${Resource.msg('oplux.popup.cancel', 'opluxAdmin', null)}</button>
+            <button class="button ma_memo_update">${Resource.msg('oplux.popup.update', 'opluxAdmin', null)}</button>
+        </div>
+    </div>
+</div>

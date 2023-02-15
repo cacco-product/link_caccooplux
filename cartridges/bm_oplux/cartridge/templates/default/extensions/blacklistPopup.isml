@@ -1,0 +1,61 @@
+<iscomment> Creates the blacklist popup content </iscomment>
+<div class="blacklist_popup_overlay">
+    <div class="blacklist_popup_content">
+        <h2 class="center">${Resource.msg('oplux.blacklist.regist.title', 'opluxAdmin', null)}</h2>
+        <table cellspacing="5px">
+            <tr>
+                <td>
+                    ${Resource.msg('oplux.blacklist.regist.customer.type.title', 'opluxAdmin', null)}
+                </td>
+                <td>
+                    <select class="border1" id="black_customer_type">
+                        <option value="10">${Resource.msg('oplux.blacklist.regist.customer.type10', 'opluxAdmin', null)}</option>
+                        <option value="20">${Resource.msg('oplux.blacklist.regist.customer.type20', 'opluxAdmin', null)}</option>
+                        <option value="30">${Resource.msg('oplux.blacklist.regist.customer.type99', 'opluxAdmin', null)}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ${Resource.msg('oplux.blacklist.regist.settle.category.title', 'opluxAdmin', null)}
+                </td>
+                <td>
+                    <select class="border1" id="black_settle_category">
+                        <option value="01">${Resource.msg('oplux.blacklist.regist.settle.category01', 'opluxAdmin', null)}</option>
+                        <option value="02">${Resource.msg('oplux.blacklist.regist.settle.category02', 'opluxAdmin', null)}</option>
+                        <option value="03">${Resource.msg('oplux.blacklist.regist.settle.category03', 'opluxAdmin', null)}</option>
+                        <option value="04">${Resource.msg('oplux.blacklist.regist.settle.category04', 'opluxAdmin', null)}</option>
+                        <option value="05">${Resource.msg('oplux.blacklist.regist.settle.category05', 'opluxAdmin', null)}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ${Resource.msg('oplux.blacklist.regist.other.category.title', 'opluxAdmin', null)}
+                </td>
+                <td>
+                    <select class="border1" id="black_other_category">
+                        <option value="">${Resource.msg('oplux.blacklist.regist.other.category00', 'opluxAdmin', null)}</option>
+                        <option value="10">${Resource.msg('oplux.blacklist.regist.other.category01', 'opluxAdmin', null)}</option>
+                        <option value="20">${Resource.msg('oplux.blacklist.regist.other.category02', 'opluxAdmin', null)}</option>
+                        <option value="30">${Resource.msg('oplux.blacklist.regist.other.category03', 'opluxAdmin', null)}</option>
+                        <option value="40">${Resource.msg('oplux.blacklist.regist.other.category04', 'opluxAdmin', null)}</option>
+                        <option value="50">${Resource.msg('oplux.blacklist.regist.other.category05', 'opluxAdmin', null)}</option>
+                        <option value="60">${Resource.msg('oplux.blacklist.regist.other.category06', 'opluxAdmin', null)}</option>
+                        <option value="70">${Resource.msg('oplux.blacklist.regist.other.category07', 'opluxAdmin', null)}</option>
+                        <option value="80">${Resource.msg('oplux.blacklist.regist.other.category08', 'opluxAdmin', null)}</option>
+                    </select>
+                    <span class="error">${Resource.msg('oplux.blacklist.regist.other.category.any', 'opluxAdmin', null)}</span>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="orderNo" value="" />
+        <input type="hidden" name="blackStatus" value="" />
+        <input type="hidden" name="url" value="" />
+        <iscomment> popup's close button </iscomment>
+        <div class="right">
+            <button class="button blacklist_regist_cancel">${Resource.msg('oplux.popup.cancel', 'opluxAdmin', null)}</button>
+            <button class="button blacklist_regist_update">${Resource.msg('oplux.popup.update', 'opluxAdmin', null)}</button>
+        </div>
+    </div>
+</div>
