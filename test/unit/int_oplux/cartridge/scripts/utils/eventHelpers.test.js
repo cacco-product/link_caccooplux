@@ -91,15 +91,16 @@ describe('eventHelpers', function () {
     });
     describe('getObjectForApiGetNormalizedName', function () {
         it('should return hashed name and field name to get normalized name from API.', function () {
-            assert.deepEqual(eventHelpers.getObjectForApiGetNormalizedName('太郎', '山田'), {
+            assert.deepEqual(eventHelpers.getObjectForApiGetNormalizedName('太郎', '山田', 'ヤマダ'), {
                 name: '山田 太郎',
-                fields: 'firstName,lastName'
+                fields: 'firstName,lastName',
+                lastFurigana: 'ヤマダ'
             });
         });
     });
     describe('getObjectForApiRegisterEvent', function () {
         it('should return request object for API register event.', function () {
-            assert.deepEqual(eventHelpers.getObjectForApiRegisterEvent(eventHelpersModule.basket, eventHelpersModule.normalizedNames, eventHelpersModule.extraRaw), {
+            assert.deepEqual(eventHelpers.getObjectForApiRegisterEvent(eventHelpersModule.basket, eventHelpersModule.normalizedNames(), eventHelpersModule.extraRaw), {
                 info: {
                     hash_method: 'DIGEST_SHA_256',
                     request_datetime: 'YYYY/MM/dd HH:mm:ss',
@@ -135,14 +136,15 @@ describe('eventHelpers', function () {
                                         alphabetCountInName: '',
                                         first_name_sha2: 'TEST',
                                         hiraganaCountInName: '',
-                                        kanjiCountInName: '',
+                                        kanjiCountInName: 4,
                                         katakanaCountInName: '',
                                         last_name_sha2: 'TEST',
-                                        nameLength: '',
+                                        nameLength: 4,
                                         normalized_first_name_sha2: 'TEST',
                                         normalized_last_name_sha2: 'TEST',
                                         otherCountInName: '',
-                                        validName: '0'
+                                        validName: '1',
+                                        correctReading: '1'
                                     },
                                     sex: '3',
                                     tel: {
@@ -175,14 +177,15 @@ describe('eventHelpers', function () {
                                             alphabetCountInName: '',
                                             first_name_sha2: 'TEST',
                                             hiraganaCountInName: '',
-                                            kanjiCountInName: '',
+                                            kanjiCountInName: 4,
                                             katakanaCountInName: '',
                                             last_name_sha2: 'TEST',
-                                            nameLength: '',
+                                            nameLength: 4,
                                             normalized_first_name_sha2: 'TEST',
                                             normalized_last_name_sha2: 'TEST',
                                             otherCountInName: '',
-                                            validName: '0'
+                                            validName: '1',
+                                            correctReading: '1'
                                         },
                                         sex: '3',
                                         tel: {

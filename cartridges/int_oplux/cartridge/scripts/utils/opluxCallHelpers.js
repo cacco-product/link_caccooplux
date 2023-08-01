@@ -8,19 +8,21 @@ var Constants = require('*/cartridge/scripts/utils/constants');
 
 /**
  * Call OPLUX Name normalization API
- * @param {Object} order
+ * @param {Object} order - order object.
  * @returns {undefined}
  */
 function getNormalizedNames(order) {
     // Name Normalize
     var buyerFirstName = order.billingAddress.firstName;
     var buyerLastName = order.billingAddress.lastName;
+    var buyerLastNameKana = order.billingAddress.custom.oplux_last_name_kana;
     var deliveryFirstName = order.defaultShipment.shippingAddress.firstName;
     var deliveryLastName = order.defaultShipment.shippingAddress.lastName;
+    var deliveryLastNameKana = order.defaultShipment.shippingAddress.custom.oplux_last_name_kana;
     var normalizedNames = {};
 
-    var buyer = OpluxServices.getNormalizedName(buyerFirstName, buyerLastName).getObject();
-    var delivery = OpluxServices.getNormalizedName(deliveryFirstName, deliveryLastName).getObject();
+    var buyer = OpluxServices.getNormalizedName(buyerFirstName, buyerLastName, buyerLastNameKana).getObject();
+    var delivery = OpluxServices.getNormalizedName(deliveryFirstName, deliveryLastName, deliveryLastNameKana).getObject();
 
     if (buyer) {
         normalizedNames.buyer = JSON.parse(buyer).response;

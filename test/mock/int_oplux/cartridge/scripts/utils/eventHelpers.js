@@ -58,6 +58,9 @@ module.exports = {
                 value: 'JP',
                 displayValue: 'Japan'
             },
+            custom: {
+                oplux_last_name_kana: 'ヤマダ'
+            },
             postalCode: '980-0022',
             stateCode: 'テスト県',
             phone: 'o12-3456-789'
@@ -75,6 +78,9 @@ module.exports = {
                 countryCode: {
                     value: 'JP',
                     displayValue: 'Japan'
+                },
+                custom: {
+                    oplux_last_name_kana: 'ヤマダ'
                 },
                 postalCode: '980-0022',
                 stateCode: 'テスト県',
@@ -121,6 +127,7 @@ module.exports = {
                 },
                 lastName: {
                     alphabet: null,
+                    correctReading: true,
                     existed: true,
                     reading: null,
                     writing: '山田'
@@ -144,6 +151,7 @@ module.exports = {
                 },
                 lastName: {
                     alphabet: null,
+                    correctReading: true,
                     existed: true,
                     reading: null,
                     writing: '山田'
@@ -313,13 +321,14 @@ module.exports = {
         }
         return result;
     },
-    getObjectForApiGetNormalizedName: function (firstName, lastName) {
+    getObjectForApiGetNormalizedName: function (firstName, lastName, lastNameKana) {
         if (!firstName || !lastName) {
             return null;
         }
         return {
             name: lastName + ' ' + firstName,
-            fields: 'firstName,lastName'
+            fields: 'firstName,lastName',
+            lastFurigana: lastNameKana
         };
     },
     eventRegistrationResultHandler: function (basketOrOrder, opluxResult, extraRaw) {

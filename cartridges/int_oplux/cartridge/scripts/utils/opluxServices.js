@@ -98,9 +98,10 @@ function webServiceCall(webService, params) {
  * GET the normalized name of the customer
  * @param {string} firstName - First name of the customer
  * @param {string} lastName - Last name of the customer
- * @returns {Object} result - Result of the API call, or null if the call failed
+ * @param {string} lastNameKana - Furigana of customer's last name
+ * @returns {Object|null} result - Result of the API call, or null if the call failed
  */
-function getNormalizedName(firstName, lastName) {
+function getNormalizedName(firstName, lastName, lastNameKana) {
     try {
         var constants = require('~/cartridge/scripts/utils/constants');
         var helper = require('~/cartridge/scripts/utils/eventHelpers');
@@ -108,7 +109,7 @@ function getNormalizedName(firstName, lastName) {
 
         if (firstName && lastName) {
             // Build the API parameter object
-            var requestObj = helper.getObjectForApiGetNormalizedName(firstName, lastName);
+            var requestObj = helper.getObjectForApiGetNormalizedName(firstName, lastName, lastNameKana);
             if (!requestObj) {
                 OPLUX_LOGGER.error('[getNormalizedName] The requestObj is empty.');
                 return null;
