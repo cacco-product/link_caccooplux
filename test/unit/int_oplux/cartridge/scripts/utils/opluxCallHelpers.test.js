@@ -9,11 +9,17 @@
 var assert = require('chai').assert;
 var successResponseNameObject = {
     billingAddress: {
+        custom: {
+            oplux_last_name_kana: 'ヤマダ'
+        },
         firstName: '山田',
         lastName: '太郎'
     },
     defaultShipment: {
         shippingAddress: {
+            custom: {
+                oplux_last_name_kana: 'ヤマダ'
+            },
             firstName: '山田',
             lastName: '太郎'
         }

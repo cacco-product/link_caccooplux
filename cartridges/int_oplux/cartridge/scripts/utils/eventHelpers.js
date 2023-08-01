@@ -205,15 +205,17 @@ function buyerAndRecipientAreTheSame(order) {
 
 /**
  * Return Object data for NormalizedName API
- * @param {String} firstName - First name of the customer
- * @param {String} lastName - Last name of the customer
+ * @param {string} firstName - First name of the customer
+ * @param {string} lastName - Last name of the customer
+ * @param {string} lastNameKana - Furigana of customer's last name.
  * @returns {Object} requestObj
  */
-function getObjectForApiGetNormalizedName(firstName, lastName) {
+function getObjectForApiGetNormalizedName(firstName, lastName, lastNameKana) {
     var hashedName = lastName.concat(' ', firstName).toUpperCase();
     var requestObj = {
         name: hashedName, // Hashed name info
-        fields: 'firstName,lastName' // Fields we want to get in the response
+        fields: 'firstName,lastName', // Fields we want to get in the response
+        lastFurigana: lastNameKana // Furigana of last name
     };
     return requestObj;
 }
@@ -304,7 +306,8 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 katakanaCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.katakanaCountInName || '',
                 alphabetCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.alphabetCountInName || '',
                 otherCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.otherCountInName || '',
-                validName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.result === 'success' ? '1' : '0'
+                validName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.result === 'success' ? '1' : '0',
+                correctReading: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.lastName && normalizedNames.buyer.lastName.correctReading ? '1' : '0'
             },
             address: {
                 country: basketOrOrder.billingAddress.countryCode.value.toUpperCase() || '',
@@ -362,7 +365,8 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 katakanaCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.katakanaCountInName || '',
                 alphabetCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.alphabetCountInName || '',
                 otherCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.otherCountInName || '',
-                validName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.result === 'success' ? '1' : '0'
+                validName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.result === 'success' ? '1' : '0',
+                correctReading: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName && normalizedNames.delivery.lastName.correctReading ? '1' : '0'
             },
             address: {
                 country: shipment.shippingAddress.countryCode.value.toUpperCase() || '',
@@ -817,14 +821,16 @@ function eventRegistrationResultHandler(basketOrOrder, opluxResult, extraRaw) {
                 aaResult = data.telegram.event.aaresult.result.toString();
                 var rules = data.telegram.event.rules;
 
-                for (var i = 0; i < rules.length; i++) {
-                    var rule = rules[i];
-                    ruleCode += rule.code;
-                    ruleCode += i !== rules.length - 1 ? '／' : '';
-                    ruleDesc += rule.description;
-                    ruleDesc += i !== rules.length - 1 ? '／' : '';
+                if (rules) {
+                    for (var i = 0; i < rules.length; i++) {
+                        var rule = rules[i];
+                        ruleCode += rule.code;
+                        ruleCode += i !== rules.length - 1 ? '／' : '';
+                        ruleDesc += rule.description;
+                        ruleDesc += i !== rules.length - 1 ? '／' : '';
+                    }
                 }
-                ruleGroup = data.telegram.event.rule_group.toString();
+                ruleGroup = data.telegram.event.rule_group && data.telegram.event.rule_group.toString();
             } else { // unsucess
                 var errors = data.errors;
                 errorMsg = createOpluxEventRegistrationErrorMessage(currentDate, errors);
