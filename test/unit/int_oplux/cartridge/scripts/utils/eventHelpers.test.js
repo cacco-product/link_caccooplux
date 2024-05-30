@@ -93,7 +93,7 @@ describe('eventHelpers', function () {
         it('should return hashed name and field name to get normalized name from API.', function () {
             assert.deepEqual(eventHelpers.getObjectForApiGetNormalizedName('太郎', '山田', 'ヤマダ'), {
                 name: '山田 太郎',
-                fields: 'firstName,lastName',
+                fields: 'firstName,lastName,correctReadingMatchCount',
                 lastFurigana: 'ヤマダ'
             });
         });
@@ -103,7 +103,7 @@ describe('eventHelpers', function () {
             assert.deepEqual(eventHelpers.getObjectForApiRegisterEvent(eventHelpersModule.basket, eventHelpersModule.normalizedNames(), eventHelpersModule.extraRaw), {
                 info: {
                     hash_method: 'DIGEST_SHA_256',
-                    request_datetime: 'YYYY/MM/dd HH:mm:ss',
+                    request_datetime: 'yyyy/MM/dd HH:mm:ss',
                     shop_id: 'SP00WIREDBEANS',
                     signature: 'TEST',
                     version: '3.0'
@@ -133,20 +133,21 @@ describe('eventHelpers', function () {
                                         }
                                     },
                                     hashed_name: {
-                                        alphabetCountInName: '',
+                                        alphabetCountInName: 0,
                                         first_name_sha2: 'TEST',
-                                        hiraganaCountInName: '',
+                                        hiraganaCountInName: 0,
                                         kanjiCountInName: 4,
-                                        katakanaCountInName: '',
+                                        katakanaCountInName: 0,
                                         last_name_sha2: 'TEST',
                                         nameLength: 4,
                                         normalized_first_name_sha2: 'TEST',
                                         normalized_last_name_sha2: 'TEST',
-                                        otherCountInName: '',
+                                        otherCountInName: 0,
                                         validName: '1',
-                                        correctReading: '1'
+                                        correctReading: '1',
+                                        correctReadingMatchCount: 3
                                     },
-                                    sex: '3',
+                                    sex: 1,
                                     tel: {
                                         fixed_number: 'o123456789',
                                         mobile_number: '123'
@@ -174,20 +175,21 @@ describe('eventHelpers', function () {
                                             }
                                         },
                                         hashed_name: {
-                                            alphabetCountInName: '',
+                                            alphabetCountInName: 0,
                                             first_name_sha2: 'TEST',
-                                            hiraganaCountInName: '',
+                                            hiraganaCountInName: 0,
                                             kanjiCountInName: 4,
-                                            katakanaCountInName: '',
+                                            katakanaCountInName: 0,
                                             last_name_sha2: 'TEST',
                                             nameLength: 4,
                                             normalized_first_name_sha2: 'TEST',
                                             normalized_last_name_sha2: 'TEST',
-                                            otherCountInName: '',
+                                            otherCountInName: 0,
                                             validName: '1',
-                                            correctReading: '1'
+                                            correctReading: '1',
+                                            correctReadingMatchCount: 3
                                         },
-                                        sex: '3',
+                                        sex: 1,
                                         tel: {
                                             fixed_number: 'o123456789',
                                             mobile_number: '123'
@@ -200,10 +202,10 @@ describe('eventHelpers', function () {
                             settle: {
                                 amount: '3814',
                                 credit_card: {
-                                    bincode: '411111'
+                                    bincode: '41111111'
                                 },
-                                datetime: 'YYYY/MM/dd HH:mm:ss',
-                                limit_price: '999999',
+                                datetime: 'yyyy/MM/dd HH:mm:ss',
+                                limit_price: 999999,
                                 method: '02',
                                 status: '00'
                             }
@@ -223,7 +225,7 @@ describe('eventHelpers', function () {
                 'request.shop_id': 'SP00WIREDBEANS',
                 'request.signiture': 'TEST',
                 'request.hash_method': 'DIGEST_SHA_256',
-                'request.request_datetime': 'YYYY/MM/dd HH:mm:ss',
+                'request.request_datetime': 'yyyy/MM/dd HH:mm:ss',
                 'request.fields': 'rules,score,similars,aaresult,maresult',
                 'request.condition.event_id': '111'
             };
@@ -247,7 +249,7 @@ describe('eventHelpers', function () {
                 'request.shop_id': 'SP00WIREDBEANS',
                 'request.signiture': 'TEST',
                 'request.hash_method': 'DIGEST_SHA_256',
-                'request.request_datetime': 'YYYY/MM/dd HH:mm:ss',
+                'request.request_datetime': 'yyyy/MM/dd HH:mm:ss',
                 request: {
                     condition: {
                         event_id: '12345'
@@ -385,51 +387,36 @@ describe('eventHelpers', function () {
             assert.deepEqual(eventHelpers.getMockDataForServices('TEST', 'POST'), {
                 statusCode: 200,
                 statusMessage: 'OK',
-                text: '<response>' +
-                    '<time>4007</time>' +
-                    '<result>20</result>' +
-                    '<errors/>' +
-                    '<event>' +
-                    '<id>140611022211204FBEA7CF83A494A7288D02D98AE30F9B3</id>' +
-                    '<result>NG</result>' +
-                    '<skipped>0</skipped>' +
-                    '<score>' +
-                    '<ok>0</ok>' +
-                    '<ng>0</ng>' +
-                    '<hold>48500</hold>' +
-                    '</score>' +
-                    '<rules>' +
-                    '<rule>' +
-                    '<code>NEG_ITEM</code>' +
-                    '<ok>0</ok>' +
-                    '<ng>0</ng>' +
-                    '<hold>10000</hold>' +
-                    '<touchpoint>event.ec.customers.delivery.shipping.item.item_name</touchpoint>' +
-                    '<description>決済金額が閾値以上、かつ、購入商品名にネガティブワードが含まれる場合に発動。 </description>' +
-                    '</rule>' +
-                    '<rule>' +
-                    '<code>PAID_MOBMAIL</code>' +
-                    '<ok>0</ok>' +
-                    '<ng>0</ng>' +
-                    '<hold>500</hold>' +
-                    '<touchpoint>event.ec.customers.buyer.email.mobile.domain,event.ec.customers.buyer.email.mobile.hashed_account</touchpoint>' +
-                    '<description>支払い済みの過去イベントを、携帯電話メールアドレスをキーとして検索し、一致件数が閾値以上の場合に発動。 </description>' +
-                    '</rule>' +
-                    '</rules>' +
-                    '<similars>' +
-                    '<similar>' +
-                    '<event_id>140407030052358A191F21F4CC04346BBF0FE27DA41801B</event_id>' +
-                    '<rule_code></rule_code>' +
-                    '<touchpoints></touchpoints>' +
-                    '</similar>' +
-                    '<similar>' +
-                    '<event_id>1208270637569454CEB14A400F649B080FF5793E5DE35BC</event_id>' +
-                    '<rule_code></rule_code>' +
-                    '<touchpoints></touchpoints>' +
-                    '</similar>' +
-                    '</similars>' +
-                    '</event>' +
-                    '</response>'
+                text: JSON.stringify({
+                    "time": 220,
+                    "result": 10,
+                    "telegram": {
+                        "event": {
+                            "id": "190611022211204FBEA7CF83A494A7288D02D98AE30F9A3",
+                            "aaresult": {
+                                "result": "NG"
+                            },
+                            "rules": [
+                                {
+                                    "code": "NEG_ITEM",
+                                    "description": "決済金額が閾値以上、かつ、購入商品名にネガティブワードが含まれる場合に発動。"
+                                },
+                                {
+                                    "code": "LBLK_ADD",
+                                    "touchpoint": "event.ec.customers.buyer.address",
+                                    "description": "自社ネガティブと住所が一致"
+                                }
+                            ],
+                            "similars": [
+                                {
+                                    "event_id": "142823185411204CEFB5BA26F467E7327D02D98AE30B2B4",
+                                    "event_id_for_shop": "ABC001"
+                                }
+                            ],
+                            "rule_group": "NG_GROUP_01"
+                        }
+                    }
+                })
             });
         });
         it('should return API return mock object if service name is not in constants and method is otherwise.', function () {
@@ -530,7 +517,7 @@ describe('eventHelpers', function () {
             var failedResultObject = {
                 success: false,
                 responseResult: '20',
-                errorMsg: '[YYYY/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
+                errorMsg: '[yyyy/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
             };
             var extraRaw = {
                 telegram: {

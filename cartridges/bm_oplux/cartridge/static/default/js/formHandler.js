@@ -312,3 +312,9 @@ jQuery(document).ready(function ($) {
         }
     });
 });
+
+function copyValue(element){
+    var clipboardText = "clipboard";  
+    navigator.clipboard.writeText(element);
+    alert('注文番号[' + element+ ']をコピーしました');
+};

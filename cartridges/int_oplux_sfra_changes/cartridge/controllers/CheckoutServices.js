@@ -12,6 +12,10 @@ server.append(
     'SubmitPayment',
     function (req, res, next) {
         this.on('route:BeforeComplete', function (req, res) { // eslint-disable-line no-shadow
+            if (res.viewData.error) {
+                return;
+            }
+
             var deviceInfo = req.httpParameterMap.get('fraudbuster');
             var paymentForm = server.forms.getForm('billing');
             var cardNumber = paymentForm.creditCardFields.cardNumber.value;

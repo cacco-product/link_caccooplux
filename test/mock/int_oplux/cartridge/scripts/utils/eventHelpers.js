@@ -128,6 +128,7 @@ module.exports = {
                 lastName: {
                     alphabet: null,
                     correctReading: true,
+                    correctReadingMatchCount: 3,
                     existed: true,
                     reading: null,
                     writing: '山田'
@@ -152,6 +153,7 @@ module.exports = {
                 lastName: {
                     alphabet: null,
                     correctReading: true,
+                    correctReadingMatchCount: 3,
                     existed: true,
                     reading: null,
                     writing: '山田'
@@ -253,7 +255,24 @@ module.exports = {
             return true;
         },
         getObject: function () {
-            return { "time": "57", "result": "10", "telegram": { "event": { "id": "220331162427039FA75E2FA56A64EE8842F1DE7DCBBD19D", "aaresult": { "result": "OK" }, "rule_group": "優先度3_OK_ルール単発", "rules": [{ "code": "TEST_OKTEL", "description": "テスト用の強制審査結果OK（TEL1末尾が0）" }] } } };
+            return {
+                "time": "57",
+                "result": "10",
+                  "telegram": {
+                    "event": {
+                        "id": "220331162427039FA75E2FA56A64EE8842F1DE7DCBBD19D",
+                        "aaresult": {
+                          "result": "OK"
+                        },
+                        "rule_group": "優先度3_OK_ルール単発",
+                        "rules": [
+                            {
+                              "code": "TEST_OKTEL", "description": "テスト用の強制審査結果OK（TEL1末尾が0）"
+                            }
+                        ]
+                    }
+                }
+            };
         }
     },
     failOpluxResult: {
@@ -301,7 +320,7 @@ module.exports = {
                 'request.shop_id': 'SP00WIREDBEANS',
                 'request.signiture': 'TEST',
                 'request.hash_method': 'DIGEST_SHA_256',
-                'request.request_datetime': 'YYYY/MM/dd HH:mm:ss',
+                'request.request_datetime': 'yyyy/MM/dd HH:mm:ss',
                 request: {
                     condition: {
                         event_id: eventId
@@ -349,7 +368,7 @@ module.exports = {
         return {
             success: false,
             responseResult: '20',
-            errorMsg: '[YYYY/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
+            errorMsg: '[yyyy/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
         };
     },
     parseToXML: function () {

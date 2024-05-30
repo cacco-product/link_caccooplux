@@ -84,7 +84,7 @@ function eventRegistrationResultHandler(order, opluxResult, extraRaw) {
 
     var currentCalendar = Calendar(new Date());
     currentCalendar.setTimeZone('Japan');
-    var currentDate = StringUtils.formatCalendar(currentCalendar, 'YYYY/MM/dd HH:mm:ss');
+    var currentDate = StringUtils.formatCalendar(currentCalendar, 'yyyy/MM/dd HH:mm:ss');
     var resObj; var
         errorMsg;
     var responseResult = constants.RESPONSE_RESULT.ERROR;

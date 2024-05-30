@@ -76,7 +76,7 @@ describe('helpers', function () {
             var failedResultObject = {
                 success: false,
                 responseResult: '20',
-                errorMsg: '[YYYY/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
+                errorMsg: '[yyyy/MM/dd HH:mm:ss] opluxResult.isOk is not a function'
             };
             assert.deepEqual(helpers.eventRegistrationResultHandler(eventHelpersModule.eventRegistrationResultBasket, eventHelpersModule.failOpluxResult, extraRaw), failedResultObject);
         });
