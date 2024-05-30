@@ -40,9 +40,9 @@ exports.RESPONSE_RESULT = {
 };
 
 exports.GENDER = {
-    MALE: '1',
-    FEMALE: '2',
-    NEUTRAL: '3'
+    MALE: 1,
+    FEMALE: 2,
+    NEUTRAL: 3
 };
 
 exports.EVENT_REQUEST_SETTLE_DEFAULT_STATUS = {

@@ -74,7 +74,7 @@
                         <isset name="unableToUpdate" value="${!isOrderStatusValid || order.getExportStatus().value == OrderClass.EXPORT_STATUS_EXPORTED}" scope="page" />
                         <tr id="order_${order.orderNo}" class="${!isFinished ? 'row_error' : ''}">
                             <td nowrap="nowrap" class="table_detail w e s center">
-                                <a href="${URLUtils.abs('ViewOrder_52-FindByNumber', 'OrderNo', order.orderNo)}" target="_blank" name="orderNo">${order.orderNo}</a>
+                                <a target="_blank" name="orderNo" style="color:black;">${order.orderNo}</a> <button class="button" onclick="copyValue('${order.orderNo}')">${Resource.msg('oplux.copy.button', 'opluxAdmin', null)}</button>
                             </td>
                             <td nowrap="nowrap" class="table_detail e s center">${creationDateString}</td>
                             <td nowrap="nowrap" class="table_detail e s center">${order.customerName}</td>

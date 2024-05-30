@@ -13,7 +13,7 @@ function convertJsonToUrlEncode(obj, parentKey) {
     var queries = [];
     var prefix = !parentKey ? '' : parentKey + '.';
     for (var key in obj) {
-        if (!obj[key]) {
+        if (obj[key] === null || obj[key] === undefined) {
             continue;
         }
         var valueType = typeof (obj[key]);
@@ -122,7 +122,7 @@ function getCommonObjectForV2() {
     var currentCalendar = Calendar(new Date());
 
     currentCalendar.setTimeZone('Asia/Tokyo');
-    var apiRequestDateTime = StringUtils.formatCalendar(currentCalendar, 'YYYY/MM/dd HH:mm:ss');
+    var apiRequestDateTime = StringUtils.formatCalendar(currentCalendar, 'yyyy/MM/dd HH:mm:ss');
     var apiSignature = buildSignature(constants.SIGNATURE_HASH_METHOD, constants.ENCODING, constants.API_CONNECTION_ID, constants.API_SHOP_ID, apiRequestDateTime, constants.API_SECRET_KEY);
 
     var eventObj = {
@@ -131,7 +131,7 @@ function getCommonObjectForV2() {
         'request.shop_id': constants.API_SHOP_ID, // O-PLUXで利用する加盟店様のID。運用開始前にご連絡いたします。[REQUIRED]
         'request.signiture': apiSignature, // シグネチャ生成ロジックについては、「実装共通仕様」に記載[REQUIRED]
         'request.hash_method': constants.SIGNATURE_HASH_METHOD.replace('-', ''), // 認証用のシグネチャ生成時に使用したハッシュ関数"SHA1","SHA256"のいずれか[REQUIRED]
-        'request.request_datetime': apiRequestDateTime // "YYYY/MM/DD HH24:MI:SS"。※日付と時刻の間に半角スペース有り。 Requestを実行したクライアント側の時刻。[REQUIRED]
+        'request.request_datetime': apiRequestDateTime // "yyyy/MM/dd HH:mm:ss"。※日付と時刻の間に半角スペース有り。 Requestを実行したクライアント側の時刻。[REQUIRED]
     };
     return eventObj;
 }
@@ -147,7 +147,7 @@ function getCommonObjectForV3() {
     var currentCalendar = Calendar(new Date());
 
     currentCalendar.setTimeZone('Asia/Tokyo');
-    var apiRequestDateTime = StringUtils.formatCalendar(currentCalendar, 'YYYY/MM/dd HH:mm:ss');
+    var apiRequestDateTime = StringUtils.formatCalendar(currentCalendar, 'yyyy/MM/dd HH:mm:ss');
     var apiSignature = buildSignature(constants.SIGNATURE_HASH_METHOD, constants.ENCODING, constants.API_CONNECTION_ID, constants.API_SHOP_ID, apiRequestDateTime, constants.API_SECRET_KEY);
 
     var eventObj = {
@@ -157,7 +157,7 @@ function getCommonObjectForV3() {
             'shop_id': constants.API_SHOP_ID, // O-PLUXで利用する加盟店様のID。運用開始前にご連絡いたします。[REQUIRED]
             'signature': apiSignature, // シグネチャ生成ロジックについては、「実装共通仕様」に記載[REQUIRED]
             'hash_method': constants.SIGNATURE_HASH_METHOD.replace('-', ''), // 認証用のシグネチャ生成時に使用したハッシュ関数"SHA1","SHA256"のいずれか[REQUIRED]
-            'request_datetime': apiRequestDateTime // "YYYY/MM/DD HH24:MI:SS"。※日付と時刻の間に半角スペース有り。 Requestを実行したクライアント側の時刻。[REQUIRED]
+            'request_datetime': apiRequestDateTime // "yyyy/MM/dd HH:mm:ss"。※日付と時刻の間に半角スペース有り。 Requestを実行したクライアント側の時刻。[REQUIRED]
         }
     };
     return eventObj;
@@ -214,7 +214,7 @@ function getObjectForApiGetNormalizedName(firstName, lastName, lastNameKana) {
     var hashedName = lastName.concat(' ', firstName).toUpperCase();
     var requestObj = {
         name: hashedName, // Hashed name info
-        fields: 'firstName,lastName', // Fields we want to get in the response
+        fields: 'firstName,lastName,correctReadingMatchCount', // Fields we want to get in the response
         lastFurigana: lastNameKana // Furigana of last name
     };
     return requestObj;
@@ -239,13 +239,13 @@ function getCustomerBirthday(order) {
 /**
  * Obtain the gender from the customer information in the order information.
  * @param {Object} order - dw.order.Order
- * @returns {string} Gender Returns a string, or a fixed value of 3 if there is no input.
+ * @returns {number} Gender Returns a number, or a fixed value of 3 if there is no input.
  */
 function getCustomerGender(order) {
     var constants = require('*/cartridge/scripts/utils/constants');
 
     if (order.getCustomer().isRegistered() && (order.getCustomer().getProfile().gender.value === constants.GENDER.MALE || order.getCustomer().getProfile().gender.value === constants.GENDER.FEMALE)) {
-        return order.getCustomer().getProfile().gender.value.toString();
+        return order.getCustomer().getProfile().gender.value;
     } else {
         return constants.GENDER.NEUTRAL;
     }
@@ -300,14 +300,9 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 normalized_last_name_sha2: hashString(normalizedNames && normalizedNames.buyer &&
                     normalizedNames.buyer.lastName && normalizedNames.buyer.lastName.writing) ||
                     hashString(basketOrOrder.billingAddress.lastName || ''),
-                nameLength: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.nameLength || '',
-                kanjiCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.kanjiCountInName || '',
-                hiraganaCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.hiraganaCountInName || '',
-                katakanaCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.katakanaCountInName || '',
-                alphabetCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.alphabetCountInName || '',
-                otherCountInName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount && normalizedNames.buyer.letterCount.otherCountInName || '',
-                validName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.result === 'success' ? '1' : '0',
-                correctReading: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.lastName && normalizedNames.buyer.lastName.correctReading ? '1' : '0'
+                validName: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.lastName.existed ? '1' : '0',
+                correctReading: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.lastName && normalizedNames.buyer.lastName.correctReading ? '1' : '0',
+                correctReadingMatchCount: normalizedNames && normalizedNames.buyer && normalizedNames.buyer.lastName && normalizedNames.buyer.lastName.correctReadingMatchCount || 0
             },
             address: {
                 country: basketOrOrder.billingAddress.countryCode.value.toUpperCase() || '',
@@ -327,6 +322,15 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 }
             }
         };
+
+        if(normalizedNames && normalizedNames.buyer && normalizedNames.buyer.letterCount){
+            buyerObj.hashed_name.nameLength = normalizedNames.buyer.letterCount.nameLength;
+            buyerObj.hashed_name.kanjiCountInName = normalizedNames.buyer.letterCount.kanjiCountInName;
+            buyerObj.hashed_name.hiraganaCountInName = normalizedNames.buyer.letterCount.hiraganaCountInName;
+            buyerObj.hashed_name.katakanaCountInName = normalizedNames.buyer.letterCount.katakanaCountInName;
+            buyerObj.hashed_name.alphabetCountInName = normalizedNames.buyer.letterCount.alphabetCountInName;
+            buyerObj.hashed_name.otherCountInName = normalizedNames.buyer.letterCount.otherCountInName;
+        }
 
         var buyerCompany = {};
         if (!empty(buyerCompanyName)) {
@@ -359,14 +363,9 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 normalized_first_name_sha2: hashString(normalizedNames && normalizedNames.delivery && normalizedNames.delivery.firstName && normalizedNames.delivery.firstName.writing) || hashString(shipment.shippingAddress.firstName || ''),
                 last_name_sha2: hashString(shipment.shippingAddress.lastName || ''),
                 normalized_last_name_sha2: hashString(normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName && normalizedNames.delivery.lastName.writing) || hashString(shipment.shippingAddress.lastName || ''),
-                nameLength: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.nameLength || '',
-                kanjiCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.kanjiCountInName || '',
-                hiraganaCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.hiraganaCountInName || '',
-                katakanaCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.katakanaCountInName || '',
-                alphabetCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.alphabetCountInName || '',
-                otherCountInName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount && normalizedNames.delivery.letterCount.otherCountInName || '',
-                validName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.result === 'success' ? '1' : '0',
-                correctReading: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName && normalizedNames.delivery.lastName.correctReading ? '1' : '0'
+                validName: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName.existed ? '1' : '0',
+                correctReading: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName && normalizedNames.delivery.lastName.correctReading ? '1' : '0',
+                correctReadingMatchCount: normalizedNames && normalizedNames.delivery && normalizedNames.delivery.lastName && normalizedNames.delivery.lastName.correctReadingMatchCount || 0
             },
             address: {
                 country: shipment.shippingAddress.countryCode.value.toUpperCase() || '',
@@ -377,15 +376,17 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
             },
             tel: {
                 fixed_number: shipment.shippingAddress.phone.replace(/-/g, ''), // ハイフンなし
-                mobile_number: basketOrOrder.getCustomer().isRegistered() ? basketOrOrder.getCustomer().getProfile().phoneMobile.replace(/-/g, '') : ''
             },
-            email: {
-                pc: {
-                    hashed_account_sha2: hashString(basketOrOrder.customerEmail.substr(0, basketOrOrder.customerEmail.indexOf('@'))),
-                    domain: basketOrOrder.customerEmail.substr(basketOrOrder.customerEmail.indexOf('@') + 1)
-                }
-            }
         };
+
+        if(normalizedNames && normalizedNames.delivery && normalizedNames.delivery.letterCount){
+            deliveryObj.hashed_name.nameLength = normalizedNames.delivery.letterCount.nameLength;
+            deliveryObj.hashed_name.kanjiCountInName = normalizedNames.delivery.letterCount.kanjiCountInName;
+            deliveryObj.hashed_name.hiraganaCountInName = normalizedNames.delivery.letterCount.hiraganaCountInName;
+            deliveryObj.hashed_name.katakanaCountInName = normalizedNames.delivery.letterCount.katakanaCountInName;
+            deliveryObj.hashed_name.alphabetCountInName = normalizedNames.delivery.letterCount.alphabetCountInName;
+            deliveryObj.hashed_name.otherCountInName = normalizedNames.delivery.letterCount.otherCountInName;
+        }
 
         var deliveryCompany = {};
         if (!empty(deliveryCompanyName)) {
@@ -402,6 +403,13 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
             deliveryObj.ID = basketOrOrder.getCustomerNo();
             deliveryObj.birth_day = getCustomerBirthday(basketOrOrder);
             deliveryObj.sex = getCustomerGender(basketOrOrder);
+            deliveryObj.tel.mobile_number = basketOrOrder.getCustomer().isRegistered() ? basketOrOrder.getCustomer().getProfile().phoneMobile.replace(/-/g, '') : '';
+            deliveryObj.email= {
+                pc: {
+                    hashed_account_sha2: hashString(basketOrOrder.customerEmail.substr(0, basketOrOrder.customerEmail.indexOf('@'))),
+                    domain: basketOrOrder.customerEmail.substr(basketOrOrder.customerEmail.indexOf('@') + 1)
+                }
+            }
         }
     }
 
@@ -418,10 +426,10 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                 ec: {
                     media_code: 'Web購入',
                     settle: {
-                        limit_price: '999999', // 一購入者の上限金額をセット。特に定めがない場合は「999999」をセット[REQUIRED]
+                        limit_price: 999999, // 一購入者の上限金額をセット。特に定めがない場合は「999999」をセット[REQUIRED]
                         status: constants.EVENT_REQUEST_SETTLE_DEFAULT_STATUS.BEFORE_BILLING, // 決済ステータス。以下コードから、初期の決済ステータスを指定。00:請求前 60:チャージバック 99:キャンセル 100:送付後キャンセル※通常、イベント登録時は"00"をセット[REQUIRED]
-                        datetime: eventObj.info.request_datetime, // "YYYY/MM/DD HH24:MI:SS" ※日付と時刻の間に半角スペース有り保持していない場合は、申請日時（request.request_datetime）をセット[REQUIRED]
-                        amount: basketOrOrder.totalGrossPrice.value.toString(), // 顧客へ請求する最終的な金額（送料、手数や割引等含む）0円可[REQUIRED]
+                        datetime: eventObj.info.request_datetime, // "yyyy/MM/dd HH:mm:ss" ※日付と時刻の間に半角スペース有り保持していない場合は、申請日時（request.request_datetime）をセット[REQUIRED]
+                        amount: basketOrOrder.totalGrossPrice.value, // 顧客へ請求する最終的な金額（送料、手数や割引等含む）0円可[REQUIRED]
                         method: paymentMethod.custom.oplux_payment_method.value, // 01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy10:PayPal 99:その他,[REQUIRED]
                         credit_card: {}
                     },
@@ -448,7 +456,7 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
 
     if (!empty(cardNumber)) {
         eventRequestObj.telegram.event.ec.settle.credit_card = {
-            bincode: cardNumber.substr(0, 6)
+            bincode: cardNumber.substr(0, 8) // クレジットカード番号の上8桁
         };
     }
     eventObj = merge(eventObj, eventRequestObj);
@@ -657,51 +665,97 @@ function getMockDataForServices(serviceName, method) {
                 mockData = {
                     statusCode: 200,
                     statusMessage: 'OK',
-                    text: '<response>' +
-                        '<time>4007</time>' +
-                        '<result>20</result>' +
-                        '<errors/>' +
-                        '<event>' +
-                        '<id>140611022211204FBEA7CF83A494A7288D02D98AE30F9B3</id>' +
-                        '<result>NG</result>' +
-                        '<skipped>0</skipped>' +
-                        '<score>' +
-                        '<ok>0</ok>' +
-                        '<ng>0</ng>' +
-                        '<hold>48500</hold>' +
-                        '</score>' +
-                        '<rules>' +
-                        '<rule>' +
-                        '<code>NEG_ITEM</code>' +
-                        '<ok>0</ok>' +
-                        '<ng>0</ng>' +
-                        '<hold>10000</hold>' +
-                        '<touchpoint>event.ec.customers.delivery.shipping.item.item_name</touchpoint>' +
-                        '<description>決済金額が閾値以上、かつ、購入商品名にネガティブワードが含まれる場合に発動。 </description>' +
-                        '</rule>' +
-                        '<rule>' +
-                        '<code>PAID_MOBMAIL</code>' +
-                        '<ok>0</ok>' +
-                        '<ng>0</ng>' +
-                        '<hold>500</hold>' +
-                        '<touchpoint>event.ec.customers.buyer.email.mobile.domain,event.ec.customers.buyer.email.mobile.hashed_account</touchpoint>' +
-                        '<description>支払い済みの過去イベントを、携帯電話メールアドレスをキーとして検索し、一致件数が閾値以上の場合に発動。 </description>' +
-                        '</rule>' +
-                        '</rules>' +
-                        '<similars>' +
-                        '<similar>' +
-                        '<event_id>140407030052358A191F21F4CC04346BBF0FE27DA41801B</event_id>' +
-                        '<rule_code></rule_code>' +
-                        '<touchpoints></touchpoints>' +
-                        '</similar>' +
-                        '<similar>' +
-                        '<event_id>1208270637569454CEB14A400F649B080FF5793E5DE35BC</event_id>' +
-                        '<rule_code></rule_code>' +
-                        '<touchpoints></touchpoints>' +
-                        '</similar>' +
-                        '</similars>' +
-                        '</event>' +
-                        '</response>'
+                    text: JSON.stringify({
+                        "time" : 74,
+                        "result" : 10,
+                        "telegram" : {
+                            "event" : {
+                            "id" : "2403121546078893B28E6CDC23044769F6E27470264C678",
+                            "aaresult" : {
+                                "result" : "OK"
+                            },
+                            "rules" : [ {
+                                "code" : "SEI_FURIGANA_MATCH_2",
+                                "description" : "購入者苗字ふりがな誤り（一致文字数が2文字未満）"
+                            }, {
+                                "code" : "SEI_FURIGANA_DLVR",
+                                "description" : "配送先苗字ふりがな誤り"
+                            }, {
+                                "code" : "TEST_OKTEL",
+                                "touchpoint" : "event.ec.customers.buyer.tel.fixed_number",
+                                "description" : "テスト用の強制審査結果OK（TEL1末尾が0）"
+                            }, {
+                                "code" : "SEI_FURIGANA",
+                                "description" : "購入者苗字ふりがな誤り"
+                            }, {
+                                "code" : "SEI_FURIGANA_DLVR_MATCH_2",
+                                "description" : "配送先苗字ふりがな誤り（一致文字数が2文字未満）"
+                            } ],
+                            "similars" : [ {
+                                "event_id" : "2402291914051677180EDE9F1A34EA7B0229792AD342467",
+                                "event_id_for_shop" : "2a674287d57733caf37987f60c"
+                            }, {
+                                "event_id" : "240229184318779AF98FF31F31B4279BE1D58441655ABA8",
+                                "event_id_for_shop" : "fa256bc130539775e925822ba5"
+                            }, {
+                                "event_id" : "24022918394515605CE48A82410479E8EDAA85E086B88E1",
+                                "event_id_for_shop" : "cd911a5043c38a456ea51d9515"
+                            }, {
+                                "event_id" : "240229182744331B65F6DA7D397499BAB65D49150F308E2",
+                                "event_id_for_shop" : "905e50cea6570aa828d8190099"
+                            }, {
+                                "event_id" : "24022918212971977236577D7DC4A6D98460AA76B3D3D8C",
+                                "event_id_for_shop" : "049deaed2bab29c6c3b8455121"
+                            }, {
+                                "event_id" : "24022918190564491ACA9CC6003449D99D079BBC3DC7D7F",
+                                "event_id_for_shop" : "dc052b02284beb88bf2fdd2856"
+                            }, {
+                                "event_id" : "240229181806483A7A08F3FE4744972A93DEF3282DC96DE",
+                                "event_id_for_shop" : "dc052b02284beb88bf2fdd2856"
+                            }, {
+                                "event_id" : "240229181135375DBE0ACAB57FF44489D3D150C52605341",
+                                "event_id_for_shop" : "161528af396188c9d7fb480a54"
+                            }, {
+                                "event_id" : "24022918062572435A78A2547A545F2BB1D87F396A2436A",
+                                "event_id_for_shop" : "52d6e444bdb08ab28f2136df87"
+                            }, {
+                                "event_id" : "240229180155964B8597A1AF3D0486DB3CCF46788588779",
+                                "event_id_for_shop" : "52d6e444bdb08ab28f2136df87"
+                            }, {
+                                "event_id" : "2402291739017846E269563F3E84053A78DA7A5F1059894",
+                                "event_id_for_shop" : "050d8159be31e9b967e0b4c1be"
+                            }, {
+                                "event_id" : "24022917324501565ADDAEFF9FD4546912B22B365DD4A07",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229172900360DDFC115434FF4BDE949D68469E60328E",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "24022917260768565FDADF3CA314E26B40DD23504F26AAE",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229172106772B8CCF4BAA3A14C5E8FBEE3581E269B83",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "2402291642152492E823B554FA548E6A8CC2CFC8BD40D6B",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229163804191AD891CF2F2C440B4A3488ED77487E068",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229162545752143D3BC16A76485AA23723CFE71F9D07",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229162058064EB0F062FE1CA498C8F24C226D34D2BF9",
+                                "event_id_for_shop" : "7dbae173a17a459952a4c0bc0a"
+                            }, {
+                                "event_id" : "240229154420193B69C3593ABD24BDFB8DB6EB0DB24B0DE",
+                                "event_id_for_shop" : "0cf9861decce19e82cc434b915"
+                            } ],
+                            "rule_group" : "優先度3_OK_ルール単発"
+                            }
+                        }
+                    })
                 };
                 break;
             default:
@@ -789,7 +843,7 @@ function eventRegistrationResultHandler(basketOrOrder, opluxResult, extraRaw) {
     var constants = require('~/cartridge/scripts/utils/constants');
     var currentCalendar = Calendar(new Date());
     currentCalendar.setTimeZone('Asia/Tokyo');
-    var currentDate = StringUtils.formatCalendar(currentCalendar, 'YYYY/MM/dd HH:mm:ss');
+    var currentDate = StringUtils.formatCalendar(currentCalendar, 'yyyy/MM/dd HH:mm:ss');
     var eventId;
     var aaResult;
     var ruleCode = '';
@@ -876,6 +930,10 @@ function eventRegistrationResultHandler(basketOrOrder, opluxResult, extraRaw) {
             if (!errorMsg) {
                 errorMsg = '[' + currentDate + '] errorCode ' + opluxResult.getError() + ': ' + opluxResult.getMsg();
             }
+
+            Transaction.wrap(function () {
+                basketOrOrder.custom.oplux_response_result = responseResult;
+            });
         }
     } catch (e) {
         OPLUX_LOGGER.error('[eventHelper] eventRegistrationResultHandler error: {0}', e.message);
