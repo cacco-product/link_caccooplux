@@ -1,6 +1,6 @@
 {
   "name": "oplux-cartridges",
-  "version": "24.5.0",
+  "version": "24.8.0",
   "description": "Salesforce Commerce Cloud O-PLUX Cartridge",
   "main": "index.js",
   "scripts": {
