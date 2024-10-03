@@ -447,7 +447,7 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
         var item = shipment.productLineItems[key];
         eventRequestObj.telegram.event.ec.items.push({
             "shop_item_id": item.productID,
-            "item_price": item.priceValue,
+            "item_price": Math.floor(basketOrOrder.allProductLineItems[key].adjustedPrice/item.quantity),
             "item_quantity": item.quantity.value,
             "item_name": item.productName,
             "item_category": item.product.classificationCategory ? item.product.classificationCategory.displayName.substr(0, 20) : '' // 文字数の上限が20文字。
