@@ -89,15 +89,6 @@ function checkOplux(basket, extraReqObj) {
         var deviceInfo = session.getPrivacy().opluxDeviceInfo;
         if (!empty(deviceInfo)) {
             extraRaw.telegram.event.device_info = deviceInfo;
-        } else {
-            var cookies = request.getHttpCookies();
-            var cookiesStr = '';
-            for (var i in cookies) {
-                var cookieItemStr = cookies[i].name + '=' + cookies[i].value + ';';
-                if (cookiesStr.length + cookieItemStr.length > 500) break;
-                cookiesStr += cookieItemStr;
-            }
-            extraRaw.telegram.event.cookie_only = cookiesStr;
         }
         extraRaw.telegram.event.ip_address_only = request.getHttpRemoteAddress().toString();
         if (extraReqObj) {
