@@ -388,33 +388,94 @@ describe('eventHelpers', function () {
                 statusCode: 200,
                 statusMessage: 'OK',
                 text: JSON.stringify({
-                    "time": 220,
+                    "time": 74,
                     "result": 10,
                     "telegram": {
-                        "event": {
-                            "id": "190611022211204FBEA7CF83A494A7288D02D98AE30F9A3",
-                            "aaresult": {
-                                "result": "NG"
+                        "event" : {
+                            "id" : "2403121546078893B28E6CDC23044769F6E27470264C678",
+                            "aaresult" : {
+                                "result" : "OK"
                             },
-                            "rules": [
-                                {
-                                    "code": "NEG_ITEM",
-                                    "description": "決済金額が閾値以上、かつ、購入商品名にネガティブワードが含まれる場合に発動。"
-                                },
-                                {
-                                    "code": "LBLK_ADD",
-                                    "touchpoint": "event.ec.customers.buyer.address",
-                                    "description": "自社ネガティブと住所が一致"
-                                }
-                            ],
-                            "similars": [
-                                {
-                                    "event_id": "142823185411204CEFB5BA26F467E7327D02D98AE30B2B4",
-                                    "event_id_for_shop": "ABC001"
-                                }
-                            ],
-                            "rule_group": "NG_GROUP_01"
-                        }
+                            "rules" : [ {
+                                "code" : "SEI_FURIGANA_MATCH_2",
+                                "description" : "購入者苗字ふりがな誤り（一致文字数が2文字未満）"
+                            }, {
+                                "code" : "SEI_FURIGANA_DLVR",
+                                "description" : "配送先苗字ふりがな誤り"
+                            }, {
+                                "code" : "TEST_OKTEL",
+                                "touchpoint" : "event.ec.customers.buyer.tel.fixed_number",
+                                "description" : "テスト用の強制審査結果OK（TEL1末尾が0）"
+                            }, {
+                                "code" : "SEI_FURIGANA",
+                                "description" : "購入者苗字ふりがな誤り"
+                            }, {
+                                "code" : "SEI_FURIGANA_DLVR_MATCH_2",
+                                "description" : "配送先苗字ふりがな誤り（一致文字数が2文字未満）"
+                            } ],
+                            "similars" : [ {
+                                "event_id" : "2402291914051677180EDE9F1A34EA7B0229792AD342467",
+                                "event_id_for_shop" : "2a674287d57733caf37987f60c"
+                            }, {
+                                "event_id" : "240229184318779AF98FF31F31B4279BE1D58441655ABA8",
+                                "event_id_for_shop" : "fa256bc130539775e925822ba5"
+                            }, {
+                                "event_id" : "24022918394515605CE48A82410479E8EDAA85E086B88E1",
+                                "event_id_for_shop" : "cd911a5043c38a456ea51d9515"
+                            }, {
+                                "event_id" : "240229182744331B65F6DA7D397499BAB65D49150F308E2",
+                                "event_id_for_shop" : "905e50cea6570aa828d8190099"
+                            }, {
+                                "event_id" : "24022918212971977236577D7DC4A6D98460AA76B3D3D8C",
+                                "event_id_for_shop" : "049deaed2bab29c6c3b8455121"
+                            }, {
+                                "event_id" : "24022918190564491ACA9CC6003449D99D079BBC3DC7D7F",
+                                "event_id_for_shop" : "dc052b02284beb88bf2fdd2856"
+                            }, {
+                                "event_id" : "240229181806483A7A08F3FE4744972A93DEF3282DC96DE",
+                                "event_id_for_shop" : "dc052b02284beb88bf2fdd2856"
+                            }, {
+                                "event_id" : "240229181135375DBE0ACAB57FF44489D3D150C52605341",
+                                "event_id_for_shop" : "161528af396188c9d7fb480a54"
+                            }, {
+                                "event_id" : "24022918062572435A78A2547A545F2BB1D87F396A2436A",
+                                "event_id_for_shop" : "52d6e444bdb08ab28f2136df87"
+                            }, {
+                                "event_id" : "240229180155964B8597A1AF3D0486DB3CCF46788588779",
+                                "event_id_for_shop" : "52d6e444bdb08ab28f2136df87"
+                            }, {
+                                "event_id" : "2402291739017846E269563F3E84053A78DA7A5F1059894",
+                                "event_id_for_shop" : "050d8159be31e9b967e0b4c1be"
+                            }, {
+                                "event_id" : "24022917324501565ADDAEFF9FD4546912B22B365DD4A07",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229172900360DDFC115434FF4BDE949D68469E60328E",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "24022917260768565FDADF3CA314E26B40DD23504F26AAE",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229172106772B8CCF4BAA3A14C5E8FBEE3581E269B83",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "2402291642152492E823B554FA548E6A8CC2CFC8BD40D6B",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229163804191AD891CF2F2C440B4A3488ED77487E068",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229162545752143D3BC16A76485AA23723CFE71F9D07",
+                                "event_id_for_shop" : "4705655a57ce5351a3e64c1b86"
+                            }, {
+                                "event_id" : "240229162058064EB0F062FE1CA498C8F24C226D34D2BF9",
+                                "event_id_for_shop" : "7dbae173a17a459952a4c0bc0a"
+                            }, {
+                                "event_id" : "240229154420193B69C3593ABD24BDFB8DB6EB0DB24B0DE",
+                                "event_id_for_shop" : "0cf9861decce19e82cc434b915"
+                            } ],
+                            "rule_group" : "優先度3_OK_ルール単発"
+                            }
                     }
                 })
             });
