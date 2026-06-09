@@ -932,7 +932,8 @@ function eventRegistrationResultHandler(basketOrOrder, opluxResult, extraRaw) {
             }
 
             Transaction.wrap(function () {
-                basketOrOrder.custom.oplux_response_result = responseResult;
+                basketOrOrder.custom.oplux_response_result = constants.RESPONSE_RESULT.ERROR;
+                basketOrOrder.custom.oplux_error = errorMsg;
             });
         }
     } catch (e) {
