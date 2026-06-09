@@ -635,8 +635,8 @@
             <attribute-definition attribute-id="oplux_payment_method">
                 <display-name xml:lang="x-default">Payment type for Oplux</display-name>
                 <display-name xml:lang="ja-JP">支払い方法の種類</display-name>
-                <description xml:lang="x-default">01:Bill Me Later 02:Credit Card 03:Cash on Delivery 04:Prepayment 05:Electronic Money 06:Bonus Point 07:Bank Transfer 08:Installments 09:Payeasy 10:PayPal 99:ETC</description>
-                <description xml:lang="ja-JP">01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マ ネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy 10:PayPal 99:その他</description>
+                <description xml:lang="x-default">01:Bill Me Later 02:Credit Card 03:Cash on Delivery 04:Prepayment 05:Electronic Money 06:Bonus Point 07:Bank Transfer 08:Installments 09:Payeasy 10:PayPal 11:QR Code Payments 12:AmazonPay 99:ETC</description>
+                <description xml:lang="ja-JP">01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マ ネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy 10:PayPal 11:QR決済 12:AmazonPay 99:その他</description>
                 <type>enum-of-string</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
@@ -689,6 +689,15 @@
                     <value-definition>
                         <display xml:lang="x-default">PayPal</display>
                         <value>10</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">QR Code Payments</display>
+                        <display xml:lang="ja-JP">QR決済</display>
+                        <value>11</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">AmazonPay</display>
+                        <value>12</value>
                     </value-definition>
                     <value-definition>
                         <display xml:lang="x-default">ETC</display>
