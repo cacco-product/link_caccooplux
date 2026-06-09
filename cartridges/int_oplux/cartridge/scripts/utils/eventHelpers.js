@@ -430,7 +430,7 @@ function getObjectForApiRegisterEvent(basketOrOrder, normalizedNames, extraRaw) 
                         status: constants.EVENT_REQUEST_SETTLE_DEFAULT_STATUS.BEFORE_BILLING, // 決済ステータス。以下コードから、初期の決済ステータスを指定。00:請求前 60:チャージバック 99:キャンセル 100:送付後キャンセル※通常、イベント登録時は"00"をセット[REQUIRED]
                         datetime: eventObj.info.request_datetime, // "yyyy/MM/dd HH:mm:ss" ※日付と時刻の間に半角スペース有り保持していない場合は、申請日時（request.request_datetime）をセット[REQUIRED]
                         amount: basketOrOrder.totalGrossPrice.value, // 顧客へ請求する最終的な金額（送料、手数や割引等含む）0円可[REQUIRED]
-                        method: paymentMethod.custom.oplux_payment_method.value, // 01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy10:PayPal 99:その他,[REQUIRED]
+                        method: paymentMethod.custom.oplux_payment_method.value, // 01:後払い 02:クレジットカード決済 03:代金引換 04:前払い 05:電子マネー 06:ポイント支払 07:口座振替 08:分割払い 09:Payeasy 10:PayPal 11:QR決済 12:AmazonPay 99:その他,[REQUIRED]
                         credit_card: {}
                     },
                     customers: {
@@ -932,7 +932,8 @@ function eventRegistrationResultHandler(basketOrOrder, opluxResult, extraRaw) {
             }
 
             Transaction.wrap(function () {
-                basketOrOrder.custom.oplux_response_result = responseResult;
+                basketOrOrder.custom.oplux_response_result = constants.RESPONSE_RESULT.ERROR;
+                basketOrOrder.custom.oplux_error = errorMsg;
             });
         }
     } catch (e) {

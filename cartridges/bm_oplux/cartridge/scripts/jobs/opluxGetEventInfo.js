@@ -56,11 +56,12 @@ function GetEventMAInfo(twoDaysAgo){
             // イベント情報を取得
             var eventInfoResult = OpluxServices.getEventInfo(eventID);
             if(!eventInfoResult.isOk()){
-                throw StringUtils.format("getEventInfo is failed. : \n{0}\n{1}\n{2}\n{3}",
-                        eventInfoResult.getStatus(),
-                        eventInfoResult.getErrorMessage(),
-                        eventInfoResult.getError(),
-                        eventInfoResult.getMsg());
+                throw StringUtils.format("[OrderNo:{0}] getEventInfo is failed. : \nstatus={1}\ncode={2}\nmessage={3}\nerrorMessage={4}",
+                    order.getOrderNo(),
+                    eventInfoResult.getStatus(),
+                    eventInfoResult.getError(),
+                    eventInfoResult.getMsg(),
+                    eventInfoResult.getErrorMessage());
             }
             var parsedResult = new XML(eventInfoResult.getObject());
 
@@ -89,9 +90,9 @@ function GetEventMAInfo(twoDaysAgo){
             }
         }
         catch(e){ // Do not stop processing orders. Just skip current order with error log.
-            Logger.error("[OrderNo:{0}] " + e);
+            Logger.error(e);
             Transaction.wrap(function(){
-                order.custom.oplux_error = dw.util.StringUtils.format("[{0}]{1}", new Date(), e.message);
+                order.custom.oplux_error = dw.util.StringUtils.format("[{0}]{1}", new Date(), e);
             });
         }
 

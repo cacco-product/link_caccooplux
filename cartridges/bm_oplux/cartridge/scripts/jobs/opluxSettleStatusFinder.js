@@ -166,6 +166,8 @@ module.exports = settleStatusFinder;
  * 08 : 分割払い
  * 09 : Payeasy
  * 10 : PayPal
+ * 11 : QR決済
+ * 12 : AmazonPay
  * 99 : その他
  */
 
